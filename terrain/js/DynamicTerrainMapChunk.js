@@ -179,7 +179,7 @@ THREE.DynamicTerrainMapChunk.prototype = {
         xOffset -= Math.pow(4,this._currentGeometryDistanceIndex);
         startWidth -= Math.pow(4,this._currentGeometryDistanceIndex);;
       }
-      if( this._heightMapWidthZero + this._width < this._heightMapWidth ) {
+      if( this._heightMapWidthZero + this._width < this._heightMapWidth - 1 ) {
         geoWidth += Math.pow(4,this._currentGeometryDistanceIndex);
         xVertices++;
         xOffset += Math.pow(4,this._currentGeometryDistanceIndex);
@@ -190,7 +190,7 @@ THREE.DynamicTerrainMapChunk.prototype = {
         zOffset -= Math.pow(4,this._currentGeometryDistanceIndex);
         startDepth -= Math.pow(4,this._currentGeometryDistanceIndex);;
       }
-      if( this._heightMapDepthZero + this._depth < this._heightMapDepth ) {
+      if( this._heightMapDepthZero + this._depth < this._heightMapDepth - 1 ) {
         geoDepth += Math.pow(4,this._currentGeometryDistanceIndex);
         zVertices++;
         zOffset += Math.pow(4,this._currentGeometryDistanceIndex);
