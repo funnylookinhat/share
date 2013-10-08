@@ -12,27 +12,27 @@ THREE.GenericTerrainMaterial = function (parameters) {
 	this._textures = [];
 	this._textures.push({
 		label: 'dirt',
-		url: '/resources/textures/reality/grass-and-rock.png',
+		url: 'resources/textures/reality/grass-and-rock.png',
 		start: 0 // Flag
 	});
 
 	this._textures.push({
 		label: 'grass',
-		url: '/resources/textures/reality/grass.png',
+		url: 'resources/textures/reality/grass.png',
 		start: 10,
 		delta: 30
 	});
 
 	this._textures.push({
 		label: 'rock',
-		url: '/resources/textures/reality/rock.png',
+		url: 'resources/textures/reality/rock.png',
 		start: 40,
 		delta: 15
 	});
 
 	this._textures.push({
 		label: 'snow',
-		url: '/resources/textures/reality/snow.png',
+		url: 'resources/textures/reality/snow.png',
 		start: 55,
 		delta: 15
 	});

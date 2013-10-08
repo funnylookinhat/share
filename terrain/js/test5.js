@@ -124,7 +124,7 @@ terrainMap.init({
   scene: scene,
   camera: camera,
   material: material,
-  imageUrl: '/storage/height-test-myst.jpg',
+  imageUrl: 'storage/height-test-500.png',
   imageScale: 0.05,
   flatWidth: 200,
   flatDepth: 200,
