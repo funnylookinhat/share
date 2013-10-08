@@ -70,7 +70,7 @@ THREE.DynamicTerrainMapChunk.prototype = {
 
     this._position = options.position.toString ? options.position : {x:0,y:0,z:0};
 
-    this._chunkWorker = new Worker('/js/DynamicTerrainMapChunkWorker.js');
+    this._chunkWorker = new Worker('js/DynamicTerrainMapChunkWorker.js');
     this._chunkWorkerReady = false;
     var self = this;
     this._chunkWorker.onmessage = function (e) {
