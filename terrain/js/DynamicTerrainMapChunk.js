@@ -168,8 +168,8 @@ THREE.DynamicTerrainMapChunk.prototype = {
       var zVertices = Math.floor( this._depth / Math.pow(4,this._currentGeometryDistanceIndex) );
 
       var newGeometry = new THREE.PlaneGeometry(
-        this._width,
-        this._depth,
+        this._width + 0.2,
+        this._depth + 0.2,
         xVertices - 1,
         zVertices - 1
       );
@@ -201,7 +201,7 @@ THREE.DynamicTerrainMapChunk.prototype = {
         this._material
       );
 
-      this._mesh.position.set(this._position.x,this._position.y,this._position.z);
+      this._mesh.position.set(this._position.x-0.1,this._position.y,this._position.z-0.1);
       this._scene.add(this._mesh);
 
       this._updating = false;
