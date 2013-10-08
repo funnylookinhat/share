@@ -167,9 +167,39 @@ THREE.DynamicTerrainMapChunk.prototype = {
       var xVertices = Math.floor( this._width / Math.pow(4,this._currentGeometryDistanceIndex) );
       var zVertices = Math.floor( this._depth / Math.pow(4,this._currentGeometryDistanceIndex) );
 
+      var geoWidth = this._width;
+      var geoDepth = this._depth;
+      var startWidth = this._heightMapWidthZero;
+      var startDepth = this._heightMapDepthZero;
+      var xOffset = 0;
+      var zOffset = 0;
+      if( this._heightMapWidthZero != 0 ) {
+        geoWidth += Math.pow(4,this._currentGeometryDistanceIndex);
+        xVertices++;
+        xOffset -= Math.pow(4,this._currentGeometryDistanceIndex);
+        startWidth -= Math.pow(4,this._currentGeometryDistanceIndex);;
+      }
+      if( this._heightMapWidthZero + this._width < this._heightMapWidth ) {
+        geoWidth += Math.pow(4,this._currentGeometryDistanceIndex);
+        xVertices++;
+        xOffset += Math.pow(4,this._currentGeometryDistanceIndex);
+      }
+      if( this._heightMapDepthZero != 0 ) {
+        geoDepth += Math.pow(4,this._currentGeometryDistanceIndex);
+        zVertices++;
+        zOffset -= Math.pow(4,this._currentGeometryDistanceIndex);
+        startDepth -= Math.pow(4,this._currentGeometryDistanceIndex);;
+      }
+      if( this._heightMapDepthZero + this._depth < this._heightMapDepth ) {
+        geoDepth += Math.pow(4,this._currentGeometryDistanceIndex);
+        zVertices++;
+        zOffset += Math.pow(4,this._currentGeometryDistanceIndex);
+      }
+
+
       var newGeometry = new THREE.PlaneGeometry(
-        this._width + 0.2,
-        this._depth + 0.2,
+        geoWidth,
+        geoDepth,
         xVertices - 1,
         zVertices - 1
       );
@@ -181,12 +211,9 @@ THREE.DynamicTerrainMapChunk.prototype = {
       for( var i = 0; i < newGeometry.vertices.length; i++ ) {
         z = Math.floor( i / xVertices );
         x = i - z * xVertices;
-        z = z * ( this._depth / Math.floor( this._depth / Math.pow(4,this._currentGeometryDistanceIndex) ) );
-        x = x * ( this._width / Math.floor( this._width / Math.pow(4,this._currentGeometryDistanceIndex) ) );
-        if( this._currentGeometryDistanceIndex >= 1 && this._position.x == 50 && this._position.z == 50 ) {
-          console.log('POINT '+x+','+z);
-        }
-        newGeometry.vertices[i].y = this._heightMap[this._getHeightMapArrayPosition(this._heightMapWidthZero + x, this._heightMapDepthZero + z)];
+        z = z * ( geoDepth / Math.floor( geoDepth / Math.pow(4,this._currentGeometryDistanceIndex) ) );
+        x = x * ( geoWidth / Math.floor( geoWidth / Math.pow(4,this._currentGeometryDistanceIndex) ) );
+        newGeometry.vertices[i].y = this._heightMap[this._getHeightMapArrayPosition(startWidth + x, startDepth + z)];
       }
       
       if( this._mesh != null ) {
@@ -201,7 +228,7 @@ THREE.DynamicTerrainMapChunk.prototype = {
         this._material
       );
 
-      this._mesh.position.set(this._position.x-0.1,this._position.y,this._position.z-0.1);
+      this._mesh.position.set(this._position.x + xOffset,this._position.y,this._position.z + zOffset);
       this._scene.add(this._mesh);
 
       this._updating = false;
