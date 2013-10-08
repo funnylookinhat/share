@@ -27,7 +27,7 @@ var cameraCheck = false;
 var cameraDelta = 0.5;//-0.5;
 var cameraY = 100;
 
-var cameraCycle = 2;
+var cameraCycle = 1;
 var cameraAngle = 0;
 
 var a = 0.01;
@@ -124,7 +124,7 @@ terrainMap.init({
   scene: scene,
   camera: camera,
   material: material,
-  flatWidth: 2000,
+  flatWidth: 2000,	
   flatDepth: 2000,
   position: {x: 0, y: 0, z: 0}
 },init);
