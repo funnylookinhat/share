@@ -167,6 +167,8 @@ THREE.DynamicTerrainMapChunk.prototype = {
       var xVertices = Math.floor( this._width / Math.pow(4,this._currentGeometryDistanceIndex) );
       var zVertices = Math.floor( this._depth / Math.pow(4,this._currentGeometryDistanceIndex) );
 
+
+      // Cheap rigging for overlapping
       var geoWidth = this._width;
       var geoDepth = this._depth;
       var startWidth = this._heightMapWidthZero;
@@ -179,7 +181,7 @@ THREE.DynamicTerrainMapChunk.prototype = {
         xOffset -= Math.pow(4,this._currentGeometryDistanceIndex);
         startWidth -= Math.pow(4,this._currentGeometryDistanceIndex);;
       }
-      if( this._heightMapWidthZero + this._width < this._heightMapWidth - 1 ) {
+      if( this._heightMapWidthZero + this._width < this._heightMapWidth ) {
         geoWidth += Math.pow(4,this._currentGeometryDistanceIndex);
         xVertices++;
         xOffset += Math.pow(4,this._currentGeometryDistanceIndex);
@@ -190,7 +192,7 @@ THREE.DynamicTerrainMapChunk.prototype = {
         zOffset -= Math.pow(4,this._currentGeometryDistanceIndex);
         startDepth -= Math.pow(4,this._currentGeometryDistanceIndex);;
       }
-      if( this._heightMapDepthZero + this._depth < this._heightMapDepth - 1 ) {
+      if( this._heightMapDepthZero + this._depth < this._heightMapDepth ) {
         geoDepth += Math.pow(4,this._currentGeometryDistanceIndex);
         zVertices++;
         zOffset += Math.pow(4,this._currentGeometryDistanceIndex);
