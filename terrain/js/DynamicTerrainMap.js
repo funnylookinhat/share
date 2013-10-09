@@ -177,18 +177,20 @@ THREE.DynamicTerrainMap.prototype = {
     var depthStart = this._position.z - Math.floor( this._depth / 2 );
     for( var j = 0; j < Math.ceil(this._width / THREE.DynamicTerrainMap._mapChunkSize); j++ ) {
       for( var k = 0; k < Math.ceil(this._depth / THREE.DynamicTerrainMap._mapChunkSize); k++ ) { 
+        var mapChunkWidth = ( j * THREE.DynamicTerrainMap._mapChunkSize + THREE.DynamicTerrainMap._mapChunkSize > this._width )
+               ? ( this._width - j * THREE.DynamicTerrainMap._mapChunkSize )
+               : THREE.DynamicTerrainMap._mapChunkSize;
+        var mapChunkDepth = ( k * THREE.DynamicTerrainMap._mapChunkSize + THREE.DynamicTerrainMap._mapChunkSize > this._depth )
+               ? ( this._depth - k * THREE.DynamicTerrainMap._mapChunkSize )
+               : THREE.DynamicTerrainMap._mapChunkSize;
         var mapChunk = new THREE.DynamicTerrainMapChunk();
         mapChunk.init({
-          width: ( j * THREE.DynamicTerrainMap._mapChunkSize + THREE.DynamicTerrainMap._mapChunkSize > this._width )
-               ? ( this._width - j * THREE.DynamicTerrainMap._mapChunkSize )
-               : THREE.DynamicTerrainMap._mapChunkSize,
-          depth: ( k * THREE.DynamicTerrainMap._mapChunkSize + THREE.DynamicTerrainMap._mapChunkSize > this._depth )
-               ? ( this._depth - k * THREE.DynamicTerrainMap._mapChunkSize )
-               : THREE.DynamicTerrainMap._mapChunkSize,
+          width: mapChunkWidth,
+          depth: mapChunkDepth,
           position: {
-            x: ( widthStart + j * THREE.DynamicTerrainMap._mapChunkSize ),
+            x: ( widthStart + j * THREE.DynamicTerrainMap._mapChunkSize - ( ( THREE.DynamicTerrainMap._mapChunkSize - mapChunkWidth ) / 2 ) ),
             y: this._position.y,
-            z: ( depthStart + k * THREE.DynamicTerrainMap._mapChunkSize )
+            z: ( depthStart + k * THREE.DynamicTerrainMap._mapChunkSize - ( ( THREE.DynamicTerrainMap._mapChunkSize - mapChunkDepth ) / 2 ) )
           },
           heightMap: this._heightMap,
           heightMapLength: this._heightMapLength,
