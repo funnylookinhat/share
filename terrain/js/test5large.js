@@ -110,6 +110,16 @@ window.requestAnimFrame = (function(){
   };
 })();
 
+function windowResize () {
+  SCREEN_WIDTH = window.innerWidth;
+  SCREEN_HEIGHT = window.innerHeight;
+  camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
+  camera.updateProjectionMatrix();
+  renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT);
+}
+
+window.addEventListener('resize', windowResize, false );
+
 var genericTerrainMaterial = new THREE.GenericTerrainMaterial();
 var material = genericTerrainMaterial.generateMaterial();
 /*

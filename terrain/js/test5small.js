@@ -25,7 +25,7 @@ renderer.autoClearColor = false;
 var cameraShift = 0;
 var cameraCheck = false;
 var cameraDelta = 0.5;//-0.5;
-var cameraY = 100;
+var cameraY = 150;
 
 var cameraCycle = 2;
 var cameraAngle = 0;
@@ -109,6 +109,16 @@ window.requestAnimFrame = (function(){
     window.setTimeout(callback, 1000 / 60);
   };
 })();
+
+function windowResize () {
+  SCREEN_WIDTH = window.innerWidth;
+  SCREEN_HEIGHT = window.innerHeight;
+  camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
+  camera.updateProjectionMatrix();
+  renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT);
+}
+
+window.addEventListener('resize', windowResize, false );
 
 var genericTerrainMaterial = new THREE.GenericTerrainMaterial();
 var material = genericTerrainMaterial.generateMaterial();
