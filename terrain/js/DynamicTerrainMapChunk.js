@@ -70,6 +70,8 @@ THREE.DynamicTerrainMapChunk.prototype = {
 
     this._position = options.position.toString ? options.position : {x:0,y:0,z:0};
 
+    console.log("CREATING CHUNK AT "+this._position.x+','+this._position.z+' WITH ZEROS '+this._heightMapWidthZero+','+this._heightMapDepthZero);
+
     this._chunkWorker = new Worker('js/DynamicTerrainMapChunkWorker.js');
     this._chunkWorkerReady = false;
     var self = this;
