@@ -177,28 +177,29 @@ THREE.DynamicTerrainMapChunk.prototype = {
       var startDepth = this._heightMapDepthZero;
       var xOffset = 0;
       var zOffset = 0;
+      var geoIncrement = Math.pow(4,this._currentGeometryDistanceIndex);
       
       if( this._heightMapWidthZero != 0 ) {
-        geoWidth += Math.pow(4,this._currentGeometryDistanceIndex);
+        geoWidth += geoIncrement;
         xVertices++;
-        xOffset -= Math.pow(4,this._currentGeometryDistanceIndex);
-        startWidth -= Math.pow(4,this._currentGeometryDistanceIndex);;
+        xOffset -= geoIncrement;
+        startWidth -= geoIncrement;
       }
-      if( ( this._heightMapWidthZero + this._width + Math.pow(4,this._currentGeometryDistanceIndex) ) < this._heightMapWidth ) {
-        geoWidth += Math.pow(4,this._currentGeometryDistanceIndex);
+      if( ( this._heightMapWidthZero + this._width + geoIncrement ) < this._heightMapWidth ) {
+        geoWidth += geoIncrement;
         xVertices++;
-        xOffset += Math.pow(4,this._currentGeometryDistanceIndex);
+        xOffset += geoIncrement;
       }
       if( this._heightMapDepthZero != 0 ) {
-        geoDepth += Math.pow(4,this._currentGeometryDistanceIndex);
+        geoDepth += geoIncrement;
         zVertices++;
-        zOffset -= Math.pow(4,this._currentGeometryDistanceIndex);
-        startDepth -= Math.pow(4,this._currentGeometryDistanceIndex);;
+        zOffset -= geoIncrement;
+        startDepth -= geoIncrement;
       }
-      if( ( this._heightMapDepthZero + this._depth + Math.pow(4,this._currentGeometryDistanceIndex)) < this._heightMapDepth ) {
-        geoDepth += Math.pow(4,this._currentGeometryDistanceIndex);
+      if( ( this._heightMapDepthZero + this._depth + geoIncrement ) < this._heightMapDepth ) {
+        geoDepth += geoIncrement;
         zVertices++;
-        zOffset += Math.pow(4,this._currentGeometryDistanceIndex);
+        zOffset += geoIncrement;
       }
 
 
@@ -218,7 +219,7 @@ THREE.DynamicTerrainMapChunk.prototype = {
         x = i - z * xVertices;
         z = z * ( geoDepth / Math.floor( geoDepth / Math.pow(4,this._currentGeometryDistanceIndex) ) );
         x = x * ( geoWidth / Math.floor( geoWidth / Math.pow(4,this._currentGeometryDistanceIndex) ) );
-        newGeometry.vertices[i].y = this._heightMap[this._getHeightMapArrayPosition(startWidth + x, startDepth + z)];
+        newGeometry.vertices[i].y = this._heightMap[this._getHeightMapArrayPosition(Math.floor(startWidth + x), Math.floor(startDepth + z))];
       }
       
       if( this._mesh != null ) {
