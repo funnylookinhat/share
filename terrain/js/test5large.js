@@ -93,8 +93,11 @@ function init() {
   console.log(camera.position.x+','+camera.position.y+','+camera.position.z);
 
   (function renderLoop(){
+    console.log('a');
     requestAnimFrame(renderLoop);
+    console.log('b');
     render();
+    console.log('c');
   })();
 }
 
