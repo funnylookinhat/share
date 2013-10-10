@@ -134,10 +134,8 @@ terrainMap.init({
   scene: scene,
   camera: camera,
   material: material,
-  imageUrl: 'storage/height-test-2048.png',
-  imageScale: 0.005,
-  flatWidth: 1000,	
-  flatDepth: 1000,
+  flatWidth: 500,	
+  flatDepth: 500,
   position: {x: 0, y: 0, z: 0}
 },init);
 
