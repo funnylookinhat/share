@@ -134,8 +134,8 @@ terrainMap.init({
   scene: scene,
   camera: camera,
   material: material,
-  flatWidth: 2000,	
-  flatDepth: 2000,
+  flatWidth: 500,	
+  flatDepth: 500,
   position: {x: 0, y: 0, z: 0}
 },init);
 
