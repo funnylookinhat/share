@@ -128,6 +128,11 @@ material = new THREE.MeshBasicMaterial({
   wireframe: true
 });
 */
+
+if( typeof debugMode == "undefined" ) {
+  var debugMode = false;
+}
+
 // Start
 var terrainMap = new THREE.DynamicTerrainMap();
 terrainMap.init({
@@ -139,7 +144,7 @@ terrainMap.init({
   flatWidth: 200,
   flatDepth: 200,
   position: {x: 0, y: 0, z: 0},
-  debugMode: true
+  debugMode: debugMode
 },init);
 
 //terrainMap.initWithImage("/storage/height-test-small.png",[0.1,0.1,0.1,0.1],init);
