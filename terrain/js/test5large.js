@@ -94,9 +94,9 @@ function init() {
 
   (function renderLoop(){
     console.log('a');
-    requestAnimFrame(renderLoop);
+    
     console.log('b');
-    render();
+    render();requestAnimFrame(renderLoop);
     console.log('c');
   })();
 }
