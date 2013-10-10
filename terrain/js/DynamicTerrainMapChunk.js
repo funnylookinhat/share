@@ -189,6 +189,7 @@ THREE.DynamicTerrainMapChunk.prototype = {
         geoWidth += geoIncrement;
         xVertices++;
         xOffset += geoIncrement;
+        startWidth -= geoIncrement;
       }
       if( this._heightMapDepthZero != 0 ) {
         geoDepth += geoIncrement;
@@ -200,6 +201,7 @@ THREE.DynamicTerrainMapChunk.prototype = {
         geoDepth += geoIncrement;
         zVertices++;
         zOffset += geoIncrement;
+        startDepth -= geoIncrement;
       }
       
 
