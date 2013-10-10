@@ -178,7 +178,7 @@ THREE.DynamicTerrainMapChunk.prototype = {
       var xOffset = 0;
       var zOffset = 0;
       var geoIncrement = Math.pow(4,this._currentGeometryDistanceIndex);
-      
+      /*
       if( this._heightMapWidthZero != 0 ) {
         geoWidth += geoIncrement;
         xVertices++;
@@ -201,6 +201,7 @@ THREE.DynamicTerrainMapChunk.prototype = {
         zVertices++;
         zOffset += geoIncrement;
       }
+      */
 
 
       var newGeometry = new THREE.PlaneGeometry(
