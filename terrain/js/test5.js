@@ -138,7 +138,8 @@ terrainMap.init({
   imageScale: 0.05,
   flatWidth: 200,
   flatDepth: 200,
-  position: {x: 0, y: 0, z: 0}
+  position: {x: 0, y: 0, z: 0},
+  debugMode: true
 },init);
 
 //terrainMap.initWithImage("/storage/height-test-small.png",[0.1,0.1,0.1,0.1],init);

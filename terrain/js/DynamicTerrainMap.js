@@ -15,10 +15,21 @@ THREE.DynamicTerrainMap = function () {
   this._camera = null;
   this._scene = null;
   this._position = null;
+  this._debugMode = false;
 }
 
 // Statics
 THREE.DynamicTerrainMap._mapChunkSize = 100;
+
+THREE.DynamicTerrainMap._debugModeColors = [
+  0x414141,
+  0x008800,
+  0x336699,
+  0xff4100,
+  0x03899c,
+  0xa6a400,
+  0xbf3030
+];
 
 THREE.DynamicTerrainMap.prototype = {
   
@@ -49,6 +60,9 @@ THREE.DynamicTerrainMap.prototype = {
 
     // The "center" position
     this._position = options.position ? options.position : {x:0,y:0,z:0};
+
+    // Replace all textures with wireframes of varying colors
+    this._debugMode = options.debugMode ? true : false;
 
     if( this._scene == null || 
         this._material == null ) {
@@ -184,6 +198,14 @@ THREE.DynamicTerrainMap.prototype = {
                ? ( this._depth - k * THREE.DynamicTerrainMap._mapChunkSize )
                : THREE.DynamicTerrainMap._mapChunkSize;
         var mapChunk = new THREE.DynamicTerrainMapChunk();
+        var mapChunkMaterial = this._material;
+        if( this._debugMode ) {
+          mapChunkMaterial = new THREE.MeshBasicMaterial({
+            color: THREE.DynamicTerrainMap._debugModeColors[Math.floor(Math.random() * THREE.DynamicTerrainMap._debugModeColors.length)],
+            wireframe: true
+          });
+        }
+
         mapChunk.init({
           width: mapChunkWidth,
           depth: mapChunkDepth,
@@ -198,7 +220,7 @@ THREE.DynamicTerrainMap.prototype = {
           heightMapDepth: this._depth,
           heightMapWidthZero: ( j * THREE.DynamicTerrainMap._mapChunkSize ),
           heightMapDepthZero: ( k * THREE.DynamicTerrainMap._mapChunkSize ),
-          material: this._material,
+          material: mapChunkMaterial,
           camera: this._camera,
           scene: this._scene
         });
