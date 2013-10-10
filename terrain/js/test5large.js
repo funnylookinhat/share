@@ -89,15 +89,11 @@ function init() {
 
   terrainMap.checkGeometry();
 
-  //camera.lookAt({x:0,y:camera.position.y,z:0});
   console.log(camera.position.x+','+camera.position.y+','+camera.position.z);
 
   (function renderLoop(){
-    console.log('a');
-    
-    console.log('b');
-    render();requestAnimFrame(renderLoop);
-    console.log('c');
+    requestAnimFrame(renderLoop);
+    render();
   })();
 }
 
@@ -137,8 +133,8 @@ terrainMap.init({
   scene: scene,
   camera: camera,
   material: material,
-  flatWidth: 2000,	
-  flatDepth: 2000,
+  flatWidth: 1000,	
+  flatDepth: 1000,
   position: {x: 0, y: 0, z: 0}
 },init);
 
