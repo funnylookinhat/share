@@ -59,8 +59,8 @@ function render() {
   } else {
     if( cameraAngle < ( Math.PI * 2 ) ) {
       cameraAngle += cameraDelta * 0.01;
-      camera.position.x = Math.sin(cameraAngle) * terrainMap.width() * 0.7;
-      camera.position.z = Math.cos(cameraAngle) * terrainMap.width() * 0.7;
+      camera.position.x = Math.sin(cameraAngle) * terrainMap.width() * 0.8;
+      camera.position.z = Math.cos(cameraAngle) * terrainMap.width() * 0.8;
       camera.lookAt({x:0,y:0,z:0});
     } else {
       cameraCycle = 1;
