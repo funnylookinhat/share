@@ -25,7 +25,7 @@ THREE.DynamicTerrainMapChunk = function () {
 }
 
 THREE.DynamicTerrainMapChunk.detailRanges = [
-	250//, 350//, 550
+	150, 250//, 350//, 550
   /*
   250,	// Everything <= 250 = 1:1
 	1000,	// 500 < x <= 1000 = 1:2
