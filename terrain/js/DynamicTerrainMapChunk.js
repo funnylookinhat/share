@@ -82,7 +82,7 @@ THREE.DynamicTerrainMapChunk.prototype = {
       self._chunkWorkerCallback(e,self);
     }
     // Check if any null?
-    
+    console.log('checking geometry');
     this.checkGeometry();
   },
 

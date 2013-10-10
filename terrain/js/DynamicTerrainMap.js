@@ -225,6 +225,7 @@ THREE.DynamicTerrainMap.prototype = {
           scene: this._scene
         });
         this._map.push(mapChunk);
+        console.log('pushed chunk');
       }
     }
 
