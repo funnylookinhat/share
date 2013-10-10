@@ -220,7 +220,7 @@ THREE.DynamicTerrainMapChunk.prototype = {
         x = i - z * xVertices;
         z = z * ( geoDepth / Math.floor( geoDepth / Math.pow(4,this._currentGeometryDistanceIndex) ) );
         x = x * ( geoWidth / Math.floor( geoWidth / Math.pow(4,this._currentGeometryDistanceIndex) ) );
-        newGeometry.vertices[i].y = this._heightMap[this._getHeightMapArrayPosition(Math.floor(startWidth + x), Math.floor(startDepth + z))];
+        newGeometry.vertices[i].y = ( 1 / Math.pow(4,this._currentGeometryDistanceIndex) ) + this._heightMap[this._getHeightMapArrayPosition(Math.floor(startWidth + x), Math.floor(startDepth + z))];
       }
       
       if( this._mesh != null ) {
