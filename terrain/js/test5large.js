@@ -79,7 +79,7 @@ setInterval(function() {
 },1000);
 
 function init() {
-  
+  console.log('Terrain ready! WxD: '+terrainMap.width()+'x'+terrainMap.depth());
   camera.position.set(
     Math.floor(terrainMap.position().x + terrainMap.width() * 0.7),
     cameraY,
