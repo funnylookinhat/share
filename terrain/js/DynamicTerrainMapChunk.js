@@ -72,12 +72,14 @@ THREE.DynamicTerrainMapChunk.prototype = {
 
     console.log("CREATING CHUNK AT "+this._position.x+','+this._position.z+' WITH ZEROS '+this._heightMapWidthZero+','+this._heightMapDepthZero);
 
-    this._chunkWorker = new Worker('js/DynamicTerrainMapChunkWorker.js');
+    //this._chunkWorker = new Worker('js/DynamicTerrainMapChunkWorker.js');
     this._chunkWorkerReady = false;
     var self = this;
+    /*
     this._chunkWorker.onmessage = function (e) {
       self._chunkWorkerCallback(e,self);
     }
+    */
     // Check if any null?
     console.log('checking geometry');
     this.checkGeometry();
