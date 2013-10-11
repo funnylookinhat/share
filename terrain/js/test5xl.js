@@ -81,9 +81,9 @@ setInterval(function() {
 function init() {
   console.log('Terrain ready! WxD: '+terrainMap.width()+'x'+terrainMap.depth());
   camera.position.set(
-    Math.floor(terrainMap.position().x + terrainMap.width() * 0.7),
+    Math.floor(terrainMap.position().x + terrainMap.width() * 0.5),
     cameraY,
-    Math.floor(terrainMap.position().z + terrainMap.depth() * 0.7)
+    Math.floor(terrainMap.position().z + terrainMap.depth() * 0.5)
   );
   camera.lookAt({x:0,y:0,z:0});
 
