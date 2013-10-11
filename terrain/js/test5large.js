@@ -139,5 +139,21 @@ terrainMap.init({
   debugMode: true
 },init);
 
+var fullAreaGeometry = new THREE.PlaneGeometry(
+  1000,
+  1000,
+  20,
+  20
+);
+fullAreaGeometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
+var fullAreaMesh = new THREE.Mesh(
+  fullAreaGeometry,
+  new THREE.MeshBasicMaterial({
+    color: 0x333333,
+    wireframe: true
+  })
+);
+scene.add(fullAreaMesh);
+
 //terrainMap.initWithImage("/storage/height-test-small.png",[0.1,0.1,0.1,0.1],init);
 
