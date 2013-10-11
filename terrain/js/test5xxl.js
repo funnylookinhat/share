@@ -143,14 +143,14 @@ terrainMap.init({
 var fullAreaGeometry = new THREE.PlaneGeometry(
   5000,
   5000,
-  100,
-  100
+  2,
+  2
 );
 fullAreaGeometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
 var fullAreaMesh = new THREE.Mesh(
   fullAreaGeometry,
   new THREE.MeshBasicMaterial({
-    color: 0x333333,
+    color: 0x999999,
     wireframe: true
   })
 );
