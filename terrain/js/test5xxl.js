@@ -25,7 +25,7 @@ renderer.autoClearColor = false;
 var cameraShift = 0;
 var cameraCheck = false;
 var cameraDelta = 1.0;//-0.5;
-var cameraY = 100;
+var cameraY = 200;
 
 var cameraCycle = 1;
 var cameraAngle = 0;
@@ -134,7 +134,7 @@ terrainMap.init({
   camera: camera,
   material: material,
   imageUrl: 'storage/height-test-4700.png',
-  imageScale: 0.5,
+  imageScale: 0.3,
   flatWidth: 5000,	
   flatDepth: 5000,
   position: {x: 0, y: 0, z: 0},
