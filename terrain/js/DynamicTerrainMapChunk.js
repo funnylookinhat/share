@@ -171,10 +171,13 @@ THREE.DynamicTerrainMapChunk.prototype = {
       var xVertices = Math.floor( this._width / Math.pow(4,this._currentGeometryDistanceIndex) );
       var zVertices = Math.floor( this._depth / Math.pow(4,this._currentGeometryDistanceIndex) );
 
+      // THIS WORKS!
+      /*
       if( this._currentGeometryDistanceIndex >= THREE.DynamicTerrainMapChunk.detailRanges.length ) {
         xVertices = 2;
         zVertices = 2;
       }
+      */
 
       // Cheap rigging for overlapping
       var geoWidth = this._width;
