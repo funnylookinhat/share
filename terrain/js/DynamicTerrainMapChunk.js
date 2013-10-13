@@ -148,7 +148,7 @@ THREE.DynamicTerrainMapChunk.prototype = {
     var self = this;
     this._updating = true;
 
-    if( this._currentGeometryDistanceIndex >= THREE.DynamicTerrainMapChunk.detailRanges.length ) {
+    if( false && this._currentGeometryDistanceIndex >= THREE.DynamicTerrainMapChunk.detailRanges.length ) {
       if( this._mesh ) {
         scene.remove(this._mesh);
         delete this._mesh;
@@ -171,6 +171,10 @@ THREE.DynamicTerrainMapChunk.prototype = {
       var xVertices = Math.floor( this._width / Math.pow(4,this._currentGeometryDistanceIndex) );
       var zVertices = Math.floor( this._depth / Math.pow(4,this._currentGeometryDistanceIndex) );
 
+      if( this._currentGeometryDistanceIndex >= THREE.DynamicTerrainMapChunk.detailRanges.length ) {
+        xVertices = 2;
+        zVertices = 2;
+      }
 
       // Cheap rigging for overlapping
       var geoWidth = this._width;
