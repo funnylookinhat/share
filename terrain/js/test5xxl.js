@@ -24,7 +24,7 @@ renderer.autoClearColor = false;
 
 var cameraShift = 0;
 var cameraCheck = false;
-var cameraDelta = 0.5;//-0.5;
+var cameraDelta = 1.0;//-0.5;
 var cameraY = 100;
 
 var cameraCycle = 1;
@@ -138,7 +138,7 @@ terrainMap.init({
   flatWidth: 5000,	
   flatDepth: 5000,
   position: {x: 0, y: 0, z: 0},
-  debugMode: true
+  debugMode: false
 },init);
 
 
