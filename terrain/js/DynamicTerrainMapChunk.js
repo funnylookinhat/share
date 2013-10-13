@@ -148,7 +148,7 @@ THREE.DynamicTerrainMapChunk.prototype = {
     var self = this;
     this._updating = true;
 
-    if( false && this._currentGeometryDistanceIndex >= THREE.DynamicTerrainMapChunk.detailRanges.length ) {
+    if( this._currentGeometryDistanceIndex >= THREE.DynamicTerrainMapChunk.detailRanges.length ) {
       if( this._mesh ) {
         scene.remove(this._mesh);
         delete this._mesh;
