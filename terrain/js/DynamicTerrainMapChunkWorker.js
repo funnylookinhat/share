@@ -12,10 +12,10 @@ self._heightMapLength = null;
 
 self.onmessage = function (e) {
   if( e.data.action == 'init' ) {
-    this._id = e.data.actionData.id;
-    this._width = e.data.actionData.width;
-    this._heightMap = e.data.actionData.heightMap;
-    this._heightMapLength = e.data.actionData.heightapLength;
+    self._id = e.data.actionData.id;
+    self._width = e.data.actionData.width;
+    self._heightMap = e.data.actionData.heightMap;
+    self._heightMapLength = e.data.actionData.heightapLength;
 
     // READY.
     self.postMessage({
