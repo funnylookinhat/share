@@ -12,32 +12,7 @@ THREE.DynamicTerrainMapChunkBuilder = function () {
   this._workers = null;
 }
 
-THREE.DynamicTerrainMapChunkBuilder.prototype.init = function (options) {
-  this._width = options.width;
-  this._depth = options.depth;
-  this._heightMap = options.heightMap;
-  this._heightMapLength = options.heightMapLength;
 
-  var workerCount = options.workerCount ? options.workerCount : 1;
-  this._workers = [];
-
-  for( var i = 0; i < workerCount; i++ ) {
-    this._workers[i] = new Worker('js/DynamicTerrainMapChunkWorker.js');
-    this._workers[i].onmessage = function (e) {
-      self._workerCallback(e,self);
-    }
-    this._workers[i].postMessage({
-      action: 'init',
-      actionData: {
-        id: i,
-        width: this._width,
-        depth: this._depth,
-        heightMap: this._heightMap,
-        heightMapLength: this._heightMapLength
-      }
-    });
-  }
-}
 
 THREE.DynamicTerrainMapChunkBuilder.prototype._workerCallback = function (e, self) {
   if( e.data.action == 'init' ) {
@@ -79,4 +54,31 @@ THREE.DynamicTerrainMapChunkBuilder.prototype._workerCallback = function (e, sel
 
   self._updating = false;
    */
+}
+
+THREE.DynamicTerrainMapChunkBuilder.prototype.init = function (options) {
+  this._width = options.width;
+  this._depth = options.depth;
+  this._heightMap = options.heightMap;
+  this._heightMapLength = options.heightMapLength;
+
+  var workerCount = options.workerCount ? options.workerCount : 1;
+  this._workers = [];
+
+  for( var i = 0; i < workerCount; i++ ) {
+    this._workers[i] = new Worker('js/DynamicTerrainMapChunkWorker.js');
+    this._workers[i].onmessage = function (e) {
+      self._workerCallback(e,self);
+    }
+    this._workers[i].postMessage({
+      action: 'init',
+      actionData: {
+        id: i,
+        width: this._width,
+        depth: this._depth,
+        heightMap: this._heightMap,
+        heightMapLength: this._heightMapLength
+      }
+    });
+  }
 }
