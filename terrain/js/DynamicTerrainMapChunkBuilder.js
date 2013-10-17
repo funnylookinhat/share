@@ -65,6 +65,8 @@ THREE.DynamicTerrainMapChunkBuilder.prototype.init = function (options) {
   var workerCount = options.workerCount ? options.workerCount : 1;
   this._workers = [];
 
+  var self = this;
+
   for( var i = 0; i < workerCount; i++ ) {
     this._workers[i] = new Worker('js/DynamicTerrainMapChunkWorker.js');
     this._workers[i].onmessage = function (e) {
