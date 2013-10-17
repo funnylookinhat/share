@@ -20,7 +20,8 @@ self.onmessage = function (e) {
     // READY.
     self.postMessage({
       action: 'init',
-      id: self.id
+      id: self.id,
+      test: e.data.actionData.id
     });
   } else {
     // Create Geometry

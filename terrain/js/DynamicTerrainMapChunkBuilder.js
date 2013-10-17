@@ -12,13 +12,44 @@ THREE.DynamicTerrainMapChunkBuilder = function () {
   this._workers = null;
 }
 
+THREE.DynamicTerrainMapChunkBuilder.prototype.init = function (options) {
+  this._width = options.width;
+  this._depth = options.depth;
+  this._heightMap = options.heightMap;
+  this._heightMapLength = options.heightMapLength;
 
+  var workerCount = options.workerCount ? options.workerCount : 1;
+  this._workers = [];
+
+  var self = this;
+
+  for( var i = 0; i < workerCount; i++ ) {
+    this._workers[i] = new Worker('js/DynamicTerrainMapChunkWorker.js');
+    this._workers[i].onmessage = function (e) {
+      self._workerCallback(e,self);
+    }
+    this._workers[i].postMessage({
+      action: 'init',
+      actionData: {
+        id: i,
+        width: this._width,
+        depth: this._depth,
+        heightMap: this._heightMap,
+        heightMapLength: this._heightMapLength
+      }
+    });
+  }
+}
 
 THREE.DynamicTerrainMapChunkBuilder.prototype._workerCallback = function (e, self) {
   if( e.data.action == 'init' ) {
     // Grab the next - we're ready!
     var workerId = e.data.id;
     console.log("WORKER "+workerId+" IS READY.");
+    console.log("### RESPONSE DATA ###");
+    console.log(e.data);
+    console.log("### RESPONSE DATA ###");
+    
   } else {
     // Process
     
@@ -56,31 +87,3 @@ THREE.DynamicTerrainMapChunkBuilder.prototype._workerCallback = function (e, sel
    */
 }
 
-THREE.DynamicTerrainMapChunkBuilder.prototype.init = function (options) {
-  this._width = options.width;
-  this._depth = options.depth;
-  this._heightMap = options.heightMap;
-  this._heightMapLength = options.heightMapLength;
-
-  var workerCount = options.workerCount ? options.workerCount : 1;
-  this._workers = [];
-
-  var self = this;
-
-  for( var i = 0; i < workerCount; i++ ) {
-    this._workers[i] = new Worker('js/DynamicTerrainMapChunkWorker.js');
-    this._workers[i].onmessage = function (e) {
-      self._workerCallback(e,self);
-    }
-    this._workers[i].postMessage({
-      action: 'init',
-      actionData: {
-        id: i,
-        width: this._width,
-        depth: this._depth,
-        heightMap: this._heightMap,
-        heightMapLength: this._heightMapLength
-      }
-    });
-  }
-}
