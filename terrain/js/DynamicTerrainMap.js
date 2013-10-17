@@ -232,6 +232,7 @@ THREE.DynamicTerrainMap.prototype = {
 
     this._chunkBuilder = new THREE.DynamicTerrainMapChunkBuilder();
     this._chunkBuilder.init({
+      workerCount: 2,
       width: this._width,
       depth: this._depth,
       heightMap: this._heightMap,
