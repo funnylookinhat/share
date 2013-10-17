@@ -12,7 +12,7 @@ THREE.DynamicTerrainMapChunkBuilder = function () {
   this._workers = null;
 }
 
-THREE.DynamicTerrainMapChunkBuilder.init = function (options) {
+THREE.DynamicTerrainMapChunkBuilder.prototype.init = function (options) {
   this._width = options.width;
   this._depth = options.depth;
   this._heightMap = options.heightMap;
@@ -39,7 +39,7 @@ THREE.DynamicTerrainMapChunkBuilder.init = function (options) {
   }
 }
 
-THREE.DynamicTerrainMapChunkBuilder._workerCallback = function (e, self) {
+THREE.DynamicTerrainMapChunkBuilder.prototype._workerCallback = function (e, self) {
   if( e.data.action == 'init' ) {
     // Grab the next - we're ready!
     var workerId = e.data.id;

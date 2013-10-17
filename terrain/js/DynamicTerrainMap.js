@@ -230,7 +230,7 @@ THREE.DynamicTerrainMap.prototype = {
       }
     }
 
-    this._chunkBuilder = new THREE.DynamicTerrainMapChunkBuilder({});
+    this._chunkBuilder = new THREE.DynamicTerrainMapChunkBuilder();
     this._chunkBuilder.init({
       width: this._width,
       depth: this._depth,
