@@ -16,6 +16,7 @@ THREE.DynamicTerrainMap = function () {
   this._scene = null;
   this._position = null;
   this._debugMode = false;
+  this._chunkBuilder = null;
 }
 
 // Statics
@@ -228,6 +229,14 @@ THREE.DynamicTerrainMap.prototype = {
         console.log('pushed chunk');
       }
     }
+
+    this._chunkBuilder = new THREE.DynamicTerrainMapChunkBuilder({});
+    this._chunkBuilder.init({
+      width: this._width,
+      depth: this._depth,
+      heightMap: this._heightMap,
+      heightMapLength: this._heightMapLength
+    });
 
     // Our callback should fire once we're ready to start throwing meshes in and out.
     callback();

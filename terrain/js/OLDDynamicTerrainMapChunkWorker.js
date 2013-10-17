@@ -4,29 +4,8 @@
 
 importScripts('includes/three.min.js');
 
-self._id = null;
-self._width = null;
-self._depth = null;
-self._heightMap = null;
-self._heightMapLength = null;
-
+/* self.addEventListener('message', */
 self.onmessage = function (e) {
-  if( e.data.action == 'init' ) {
-    this._id = e.data.actionData.id;
-    this._width = e.data.actionData.width;
-    this._heightMap = e.data.actionData.heightMap;
-    this._heightMapLength = e.data.actionData.heightapLength;
-
-    // READY.
-    self.postMessage({
-      action: 'init',
-      id: self.id
-    });
-  } else {
-    // Create Geometry
-    
-  }
-  /*
   var data = e.data;
   var currentGeometryDistanceIndex = data.currentGeometryDistanceIndex;
   var width = data.width;
@@ -59,7 +38,6 @@ self.onmessage = function (e) {
   }
 
   self.postMessage({geometry: newGeometry});
-  */
 };//, false);
 
 function  _getHeightMapArrayPosition (widthPosition, depthPosition, heightMapWidth) {
