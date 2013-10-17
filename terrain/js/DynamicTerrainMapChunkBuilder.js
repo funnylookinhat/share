@@ -8,6 +8,8 @@ THREE.DynamicTerrainMapChunkBuilder = function () {
   this._depth = null;
   this._heightMap = null;
   this._heightMapLength = null;
+  this._sendChunkGeometry = null;
+  this._requestQueue = null;
   
   this._workers = null;
 }
@@ -17,9 +19,11 @@ THREE.DynamicTerrainMapChunkBuilder.prototype.init = function (options) {
   this._depth = options.depth;
   this._heightMap = options.heightMap;
   this._heightMapLength = options.heightMapLength;
+  this._sendChunkGeometry = options.sendChunkGeometry;
 
   var workerCount = options.workerCount ? options.workerCount : 1;
   this._workers = [];
+  this._workersReady = [];
 
   var self = this;
 
@@ -28,6 +32,7 @@ THREE.DynamicTerrainMapChunkBuilder.prototype.init = function (options) {
     this._workers[i].onmessage = function (e) {
       self._workerCallback(e,self);
     }
+    this._workersReady[i] = false;
     this._workers[i].postMessage({
       action: 'init',
       actionData: {
@@ -42,48 +47,42 @@ THREE.DynamicTerrainMapChunkBuilder.prototype.init = function (options) {
 }
 
 THREE.DynamicTerrainMapChunkBuilder.prototype._workerCallback = function (e, self) {
+  var workerId = e.data.id;
   if( e.data.action == 'init' ) {
     // Grab the next - we're ready!
-    var workerId = e.data.id;
-    console.log("WORKER "+workerId+" IS READY.");
-    console.log("### RESPONSE DATA ###");
-    console.log(e.data);
-    console.log("### RESPONSE DATA ###");
-    
+    self._getNextJob(workerId, self);
   } else {
     // Process
-    
+    var mapChunkIndex = e.data.mapChunkIndex;
+    var distanceIndex = e.data.distanceIndex;
+    var vertices = e.data.vertices;
+    self._sendChunkGeometry(mapChunkIndex, distanceIndex, vertices);
     // Grab the next
+    self._getNextJob(workerId, self);
   }
-  /*
-  var newGeometry = e.data.geometry;
-  var xVertices = Math.floor( this._width / Math.pow(4,this._currentGeometryDistanceIndex) );
-  var zVertices = Math.floor( this._depth / Math.pow(4,this._currentGeometryDistanceIndex) );
-  var newGeometry = new THREE.PlaneGeometry(
-    this._width,
-    this._depth,
-    xVertices - 1,
-    zVertices - 1
-  );
-  newGeometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
-  newGeometry.vertices = e.data.geometry.vertices;
-
-  if( self._mesh != null ) {
-    scene.remove(self._mesh);
-    delete self._mesh;
-    delete self._geometry;
-  }
-
-  self._geometry = newGeometry;
-  self._mesh = new THREE.Mesh(
-    self._geometry,
-    self._material
-  );
-
-  self._mesh.position.set(self._position.x,self._position.y,self._position.z);
-  self._scene.add(self._mesh);
-
-  self._updating = false;
-   */
 }
 
+THREE.DynamicTerrainMapChunkBuilder.prototype._getNextJob = function (workerId, self) {
+  if( this._requestQueue.length > 0 ) {
+    var request = this._requestQueue.unshift();
+    this._workers[workerId].postMessage({
+      action: 'build',
+      actionData: request
+    });
+  } else {
+    this._workersReady[workerId] = true;
+  }
+}
+
+THREE.DynamicTerrainMapChunkBuilder.prototype.updateChunkGeometry = function (request) {
+  this._requestQueue.push(request);
+  this._assignEmptyWorkers();
+}
+
+THREE.DynamicTerrainMapChunkBuilder.prototype._assignEmptyWorkers = function () {
+  for( var i = 0; i < this._workersReady.length; i++ ) {
+    if( this._workersRead[i] ) {
+      this._getNextJob(i);
+    }
+  }
+}

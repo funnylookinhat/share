@@ -187,11 +187,27 @@ THREE.DynamicTerrainMap.prototype = {
   },
 
   _generateMap: function (callback) {
+    // Create our Builder first - we'll need to pass references
+    // to this in our mapChunks.
+    this._chunkBuilder = new THREE.DynamicTerrainMapChunkBuilder();
+    this._chunkBuilder.init({
+      workerCount: 2,
+      width: this._width,
+      depth: this._depth,
+      heightMap: this._heightMap,
+      heightMapLength: this._heightMapLength,
+      sendChunkGeometry: function (index, distanceIndex, vertices) {
+        self._sendChunkGeometry(index, distanceIndex, vertices);
+      }
+    });
+
     this._map = [];
+    var self = this;
     var widthStart = this._position.x - Math.floor( this._width / 2 );
     var depthStart = this._position.z - Math.floor( this._depth / 2 );
     for( var j = 0; j < Math.ceil(this._width / THREE.DynamicTerrainMap._mapChunkSize); j++ ) {
       for( var k = 0; k < Math.ceil(this._depth / THREE.DynamicTerrainMap._mapChunkSize); k++ ) { 
+        var mapChunkIndex = ( j + k * Math.ceil(this._width / THREE.DynamicTerrainMap._mapChunkSize) );
         var mapChunkWidth = ( j * THREE.DynamicTerrainMap._mapChunkSize + THREE.DynamicTerrainMap._mapChunkSize > this._width )
                ? ( this._width - j * THREE.DynamicTerrainMap._mapChunkSize )
                : THREE.DynamicTerrainMap._mapChunkSize;
@@ -208,6 +224,7 @@ THREE.DynamicTerrainMap.prototype = {
         }
 
         mapChunk.init({
+          mapIndex: mapChunkIndex,
           width: mapChunkWidth,
           depth: mapChunkDepth,
           position: {
@@ -223,24 +240,31 @@ THREE.DynamicTerrainMap.prototype = {
           heightMapDepthZero: ( k * THREE.DynamicTerrainMap._mapChunkSize ),
           material: mapChunkMaterial,
           camera: this._camera,
-          scene: this._scene
+          scene: this._scene,
+          buildChunkGeometry: function (distanceIndex) {
+            self._chunkBuilder.updateChunkGeometry(
+              {
+                mapChunkIndex: mapChunkIndex,
+                heightMapWidthZero: ( j * THREE.DynamicTerrainMap._mapChunkSize ),
+                heightMapDepthZero: ( k * THREE.DynamicTerrainMap._mapChunkSize ),
+                chunkWidth: mapChunkWidth,
+                chunkDepth: mapChunkDepth,
+                distanceIndex: distanceIndex
+              }
+            );
+          }
         });
+        this._map[mapChunkIndex] = mapChunk;
         this._map.push(mapChunk);
-        console.log('pushed chunk');
       }
     }
 
-    this._chunkBuilder = new THREE.DynamicTerrainMapChunkBuilder();
-    this._chunkBuilder.init({
-      workerCount: 2,
-      width: this._width,
-      depth: this._depth,
-      heightMap: this._heightMap,
-      heightMapLength: this._heightMapLength
-    });
-
     // Our callback should fire once we're ready to start throwing meshes in and out.
     callback();
+  },
+
+  _sendChunkGeometry: function (index, distanceIndex, vertices) {
+    this._map[index].updateChunkGeometry(distanceIndex, vertices);
   },
 
   _getHeightMapArrayPosition: function (widthPosition, depthPosition) {
