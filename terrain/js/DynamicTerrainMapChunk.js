@@ -18,6 +18,7 @@ THREE.DynamicTerrainMapChunk = function () {
   this._material = null;
   this._camera = null;
   this._scene = null;
+  this._useWorkers = false;
 
   this._geometry = null;
   this._mesh = null;
@@ -111,41 +112,6 @@ THREE.DynamicTerrainMapChunk.prototype = {
     this._updating = false;
   },
 
-  // THIS WORKS???
-  /*
-  _chunkWorkerCallback: function(e, self) {
-    console.log('RECEIVING '+self._position.x+','+self._position.z);
-    var newGeometry = e.data.geometry;
-    var xVertices = Math.floor( this._width / Math.pow(4,this._currentGeometryDistanceIndex) );
-    var zVertices = Math.floor( this._depth / Math.pow(4,this._currentGeometryDistanceIndex) );
-    var newGeometry = new THREE.PlaneGeometry(
-      this._width,
-      this._depth,
-      xVertices - 1,
-      zVertices - 1
-    );
-    newGeometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
-    newGeometry.vertices = e.data.geometry.vertices;
-
-    if( self._mesh != null ) {
-      scene.remove(self._mesh);
-      delete self._mesh;
-      delete self._geometry;
-    }
-
-    self._geometry = newGeometry;
-    self._mesh = new THREE.Mesh(
-      self._geometry,
-      self._material
-    );
-
-    self._mesh.position.set(self._position.x,self._position.y,self._position.z);
-    self._scene.add(self._mesh);
-
-    self._updating = false;
-  },
-  */
-
   // Check if we need to redraw 
   checkGeometry: function() {
     if( this._currentGeometryDistance == null ||
@@ -187,6 +153,7 @@ THREE.DynamicTerrainMapChunk.prototype = {
 
     // Send our request to the chunk builder.
       //this._buildChunkGeometry(this._mapIndex, this._currentGeometryDistanceIndex);
+    if( this._useWorkers ) {
       this._buildChunkGeometry(
         this._mapIndex, 
         this._currentGeometryDistanceIndex,
@@ -194,19 +161,6 @@ THREE.DynamicTerrainMapChunk.prototype = {
         this._heightMapDepthZero, 
         this._width, 
         this._depth);
-    
-    /*
-    console.log('SENDING '+this._position.x+','+this._position.z);
-    if( this._chunkWorkerReady ) {
-      this._chunkWorker.postMessage({
-        currentGeometryDistanceIndex: this._currentGeometryDistanceIndex,
-        width: this._width,
-        depth: this._depth,
-        heightMap: this._heightMap,
-        heightMapWidth: this._heightMapWidth,
-        heightMapWidthZero: this._heightMapWidthZero,
-        heightMapDepthZero: this._heightMapDepthZero
-      });
     } else {
       var xVertices = Math.floor( this._width / Math.pow(4,this._currentGeometryDistanceIndex) );
       var zVertices = Math.floor( this._depth / Math.pow(4,this._currentGeometryDistanceIndex) );
@@ -287,7 +241,6 @@ THREE.DynamicTerrainMapChunk.prototype = {
 
       this._updating = false;
     }
-    */
   },
 
   _geometryDistanceIndex: function() {

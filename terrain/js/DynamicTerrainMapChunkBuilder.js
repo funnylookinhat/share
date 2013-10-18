@@ -83,15 +83,17 @@ THREE.DynamicTerrainMapChunkBuilder.prototype.updateChunkGeometry = function (re
   for( var i = 0; i < this._requestQueue.length; i++ ) {
     if( this._requestQueue[i].mapChunkIndex == request.mapChunkIndex ) {
       insert = false;
+      // Update Distance Index
+      this._requestQueue[i].distanceIndex = request.distanceIndex;
     }
   }
   if( insert ) {
-    console.log('NEW INSERT');
+    //console.log('NEW INSERT');
     this._requestQueue.push(request);
-    console.log('REQUEST QUEUE LENGTH '+this._requestQueue.length);
+    //console.log('REQUEST QUEUE LENGTH '+this._requestQueue.length);
     this._assignEmptyWorkers();
   } else {
-    console.log('ALREADY INSERTED');
+    //console.log('ALREADY INSERTED');
   }
 }
 
