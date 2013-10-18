@@ -50,16 +50,18 @@ self.onmessage = function (e) {
       x = i - z * xVertices;
       z = z * ( depth / Math.floor( depth / Math.pow(4,currentGeometryDistanceIndex) ) );
       x = x * ( width / Math.floor( width / Math.pow(4,currentGeometryDistanceIndex) ) );
-      newGeometry.vertices[i].y = heightMap[_getHeightMapArrayPosition(heightMapWidthZero + x, heightMapDepthZero + z, self._width)];
+      newGeometry.vertices[i].y = self._heightMap[_getHeightMapArrayPosition(heightMapWidthZero + x, heightMapDepthZero + z, self._width)];
     }
+
+    var vertices = newGeometry.vertices;
 
     self.postMessage({
       action: 'build',
       id: self._id,
       mapChunkIndex: mapChunkIndex,
       distanceIndex: currentGeometryDistanceIndex,
-      vertices: geometry.vertices
-    },[geometry.vertices]);
+      vertices: vertices
+    }/*,[vertices]*/);
   }
 };
 

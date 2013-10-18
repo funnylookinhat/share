@@ -36,7 +36,7 @@ function render() {
   
   cameraShift += Math.abs(cameraDelta*2);
   if( ! cameraCheck &&
-  		cameraShift > 50 ) {
+  		cameraShift > 100 ) {
   	cameraCheck = true;
   	terrainMap.checkGeometry(function() {
       cameraShift = 0;

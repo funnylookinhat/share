@@ -24,6 +24,7 @@ THREE.DynamicTerrainMapChunkBuilder.prototype.init = function (options) {
   var workerCount = options.workerCount ? options.workerCount : 1;
   this._workers = [];
   this._workersReady = [];
+  this._requestQueue = [];
 
   var self = this;
 
@@ -64,7 +65,9 @@ THREE.DynamicTerrainMapChunkBuilder.prototype._workerCallback = function (e, sel
 
 THREE.DynamicTerrainMapChunkBuilder.prototype._getNextJob = function (workerId, self) {
   if( this._requestQueue.length > 0 ) {
-    var request = this._requestQueue.unshift();
+    var request =  this._requestQueue.shift();
+   
+    //console.log('SENDING REQUEST FOR INDEX '+request.mapChunkIndex+' ? '+request.distanceIndex);
     this._workers[workerId].postMessage({
       action: 'build',
       actionData: request
@@ -75,13 +78,22 @@ THREE.DynamicTerrainMapChunkBuilder.prototype._getNextJob = function (workerId, 
 }
 
 THREE.DynamicTerrainMapChunkBuilder.prototype.updateChunkGeometry = function (request) {
-  this._requestQueue.push(request);
-  this._assignEmptyWorkers();
+  //console.log("REQUEST RECEIVED FOR INDEX "+request.mapChunkIndex+" ? "+request.distanceIndex);
+  var insert = true;
+  for( var i = 0; i < this._requestQueue.length; i++ ) {
+    if( this._requestQueue[i].mapChunkIndex == request.mapChunkIndex ) {
+      insert = false;
+    }
+  }
+  if( insert ) {
+    this._requestQueue.push(request);
+    this._assignEmptyWorkers();
+  }
 }
 
 THREE.DynamicTerrainMapChunkBuilder.prototype._assignEmptyWorkers = function () {
   for( var i = 0; i < this._workersReady.length; i++ ) {
-    if( this._workersRead[i] ) {
+    if( this._workersReady[i] ) {
       this._getNextJob(i);
     }
   }
