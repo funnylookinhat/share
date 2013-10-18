@@ -17,6 +17,7 @@ THREE.DynamicTerrainMap = function () {
   this._position = null;
   this._debugMode = false;
   this._chunkBuilder = null;
+  this._useWorkers = false;
 }
 
 // Statics
@@ -64,6 +65,8 @@ THREE.DynamicTerrainMap.prototype = {
 
     // Replace all textures with wireframes of varying colors
     this._debugMode = options.debugMode ? true : false;
+
+    this._useWorkers = options.useWorkers ? true : false;
 
     if( this._scene == null || 
         this._material == null ) {
@@ -241,6 +244,7 @@ THREE.DynamicTerrainMap.prototype = {
           material: mapChunkMaterial,
           camera: this._camera,
           scene: this._scene,
+          useWorkers: this._useWorkers,
           buildChunkGeometry: function (chunkIndex, distanceIndex, widthZero, depthZero, chunkWidth, chunkDepth) {
             self._chunkBuilder.updateChunkGeometry(
               {

@@ -34,9 +34,40 @@ self.onmessage = function (e) {
     var xVertices = Math.floor( width / Math.pow(4,currentGeometryDistanceIndex) );
     var zVertices = Math.floor( depth / Math.pow(4,currentGeometryDistanceIndex) );
 
+    var geoWidth = width;
+    var geoDepth = depth;
+    var startWidth = heightMapWidthZero;
+    var startDepth = heightMapDepthZero;
+    var xOffset = 0;
+    var zOffset = 0;
+    var geoIncrement = Math.pow(4,currentGeometryDistanceIndex);
+    
+    if( heightMapWidthZero != 0 ) {
+      geoWidth += geoIncrement;
+      xVertices++;
+      xOffset -= geoIncrement / 2;
+      startWidth -= geoIncrement;
+    }
+    if( ( heightMapWidthZero + width + geoIncrement ) < self._width ) {
+      geoWidth += geoIncrement;
+      xVertices++;
+      xOffset += geoIncrement / 2;
+    }
+    if( heightMapDepthZero != 0 ) {
+      geoDepth += geoIncrement;
+      zVertices++;
+      zOffset -= geoIncrement / 2;
+      startDepth -= geoIncrement;
+    }
+    if( ( heightMapDepthZero + depth + geoIncrement ) < self._depth ) {
+      geoDepth += geoIncrement;
+      zVertices++;
+      zOffset += geoIncrement / 2;
+    }
+    
     var newGeometry = new THREE.PlaneGeometry(
-      width,
-      depth,
+      geoWidth,
+      geoDepth,
       xVertices - 1,
       zVertices - 1
     );
@@ -48,9 +79,9 @@ self.onmessage = function (e) {
     for( var i = 0; i < newGeometry.vertices.length; i++ ) {
       z = Math.floor( i / xVertices );
       x = i - z * xVertices;
-      z = z * ( depth / Math.floor( depth / Math.pow(4,currentGeometryDistanceIndex) ) );
-      x = x * ( width / Math.floor( width / Math.pow(4,currentGeometryDistanceIndex) ) );
-      newGeometry.vertices[i].y = self._heightMap[_getHeightMapArrayPosition(heightMapWidthZero + x, heightMapDepthZero + z, self._width)];
+      z = z * ( geoDepth / Math.floor( geoDepth / Math.pow(4,this._currentGeometryDistanceIndex) ) );
+      x = x * ( geoWidth / Math.floor( geoWidth / Math.pow(4,this._currentGeometryDistanceIndex) ) );
+      newGeometry.vertices[i].y = 0;//( 1 / Math.pow(4,this._currentGeometryDistanceIndex) ) + self._heightMap[_getHeightMapArrayPosition(Math.floor(startWidth + x), Math.floor(startDepth + z), self._width)];
     }
 
     var vertices = newGeometry.vertices;

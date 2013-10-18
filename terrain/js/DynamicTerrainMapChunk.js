@@ -72,6 +72,7 @@ THREE.DynamicTerrainMapChunk.prototype = {
     this._camera = options.camera.toString ? options.camera : null;
     this._scene = options.scene.toString ? options.scene : null;
     this._buildChunkGeometry = options.buildChunkGeometry;
+    this._useWorkers = options.useWorkers ? true : false;
 
     this._position = options.position.toString ? options.position : {x:0,y:0,z:0};
 
@@ -126,7 +127,6 @@ THREE.DynamicTerrainMapChunk.prototype = {
         ) ) {
         this._currentGeometryDistanceIndex = 0;
       }
-      //console.log('CHUNK AT '+this._position.x+','+this._position.y+','+this._position.z+' : '+this._currentGeometryDistanceIndex);
       if( index != this._currentGeometryDistanceIndex ) {
         this._currentGeometryDistanceIndex = index;
         this._updateGeometry();

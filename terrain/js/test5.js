@@ -1,4 +1,9 @@
 // Boring Stuff
+
+if( typeof useWorkers == "undefined" ) {
+  var useWorkers = false;
+}
+
 var canvas = document.createElement('canvas');
 document.getElementById('render').appendChild(canvas);
 var SCREEN_WIDTH = window.innerWidth;
@@ -144,7 +149,8 @@ terrainMap.init({
   flatWidth: 200,
   flatDepth: 200,
   position: {x: 0, y: 0, z: 0},
-  debugMode: debugMode
+  debugMode: debugMode,
+  useWorkers: useWorkers ? true : false
 },init);
 
 //terrainMap.initWithImage("/storage/height-test-small.png",[0.1,0.1,0.1,0.1],init);
