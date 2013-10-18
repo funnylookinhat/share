@@ -78,7 +78,7 @@ THREE.DynamicTerrainMapChunkBuilder.prototype._getNextJob = function (workerId, 
 }
 
 THREE.DynamicTerrainMapChunkBuilder.prototype.updateChunkGeometry = function (request) {
-  //console.log("REQUEST RECEIVED FOR INDEX "+request.mapChunkIndex+" ? "+request.distanceIndex);
+  //console.log("REQUEST RECEIVED FOR INDEX "+request.mapChunkIndex+" ? "+request.distanceIndex+" / "+request.heightMapWidthZero+','+request.heightMapDepthZero);
   var insert = true;
   for( var i = 0; i < this._requestQueue.length; i++ ) {
     if( this._requestQueue[i].mapChunkIndex == request.mapChunkIndex ) {
@@ -86,8 +86,12 @@ THREE.DynamicTerrainMapChunkBuilder.prototype.updateChunkGeometry = function (re
     }
   }
   if( insert ) {
+    console.log('NEW INSERT');
     this._requestQueue.push(request);
+    console.log('REQUEST QUEUE LENGTH '+this._requestQueue.length);
     this._assignEmptyWorkers();
+  } else {
+    console.log('ALREADY INSERTED');
   }
 }
 

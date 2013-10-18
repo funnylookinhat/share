@@ -30,7 +30,7 @@ self.onmessage = function (e) {
     var heightMapDepthZero = e.data.actionData.heightMapDepthZero;
     var currentGeometryDistanceIndex = e.data.actionData.distanceIndex;
     var mapChunkIndex = e.data.actionData.mapChunkIndex;
-
+    
     var xVertices = Math.floor( width / Math.pow(4,currentGeometryDistanceIndex) );
     var zVertices = Math.floor( depth / Math.pow(4,currentGeometryDistanceIndex) );
 

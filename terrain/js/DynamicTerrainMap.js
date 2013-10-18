@@ -241,15 +241,15 @@ THREE.DynamicTerrainMap.prototype = {
           material: mapChunkMaterial,
           camera: this._camera,
           scene: this._scene,
-          buildChunkGeometry: function (chunkIndex, distanceIndex) {
+          buildChunkGeometry: function (chunkIndex, distanceIndex, widthZero, depthZero, chunkWidth, chunkDepth) {
             self._chunkBuilder.updateChunkGeometry(
               {
                 mapChunkIndex: chunkIndex,
-                heightMapWidthZero: ( j * THREE.DynamicTerrainMap._mapChunkSize ),
-                heightMapDepthZero: ( k * THREE.DynamicTerrainMap._mapChunkSize ),
-                chunkWidth: mapChunkWidth,
-                chunkDepth: mapChunkDepth,
-                distanceIndex: distanceIndex
+                distanceIndex: distanceIndex,
+                heightMapWidthZero: widthZero,
+                heightMapDepthZero: depthZero,
+                chunkWidth: chunkWidth,
+                chunkDepth: chunkDepth
               }
             );
           }

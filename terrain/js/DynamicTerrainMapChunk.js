@@ -176,7 +176,7 @@ THREE.DynamicTerrainMapChunk.prototype = {
     var self = this;
     this._updating = true;
 
-    if( false && this._currentGeometryDistanceIndex >= THREE.DynamicTerrainMapChunk.detailRanges.length ) {
+    if( this._currentGeometryDistanceIndex >= THREE.DynamicTerrainMapChunk.detailRanges.length ) {
       if( this._mesh ) {
         scene.remove(this._mesh);
         delete this._mesh;
@@ -186,7 +186,14 @@ THREE.DynamicTerrainMapChunk.prototype = {
     }
 
     // Send our request to the chunk builder.
-    this._buildChunkGeometry(this._mapIndex, this._currentGeometryDistanceIndex);
+      //this._buildChunkGeometry(this._mapIndex, this._currentGeometryDistanceIndex);
+      this._buildChunkGeometry(
+        this._mapIndex, 
+        this._currentGeometryDistanceIndex,
+        this._heightMapWidthZero, 
+        this._heightMapDepthZero, 
+        this._width, 
+        this._depth);
     
     /*
     console.log('SENDING '+this._position.x+','+this._position.z);
