@@ -81,7 +81,7 @@ self.onmessage = function (e) {
       x = i - z * xVertices;
       z = z * ( geoDepth / Math.floor( geoDepth / Math.pow(4,this._currentGeometryDistanceIndex) ) );
       x = x * ( geoWidth / Math.floor( geoWidth / Math.pow(4,this._currentGeometryDistanceIndex) ) );
-      newGeometry.vertices[i].y = 0;//( 1 / Math.pow(4,this._currentGeometryDistanceIndex) ) + self._heightMap[_getHeightMapArrayPosition(Math.floor(startWidth + x), Math.floor(startDepth + z), self._width)];
+      newGeometry.vertices[i].y = ( 1 / Math.pow(4,this._currentGeometryDistanceIndex) ) + self._heightMap[_getHeightMapArrayPosition(Math.floor(startWidth + x), Math.floor(startDepth + z), self._width)];
     }
 
     var vertices = newGeometry.vertices;
