@@ -41,7 +41,7 @@ self.onmessage = function (e) {
     var xOffset = 0;
     var zOffset = 0;
     var geoIncrement = Math.pow(4,currentGeometryDistanceIndex);
-    
+    /*
     if( heightMapWidthZero != 0 ) {
       geoWidth += geoIncrement;
       xVertices++;
@@ -64,7 +64,7 @@ self.onmessage = function (e) {
       zVertices++;
       zOffset += geoIncrement / 2;
     }
-    
+    */
     var newGeometry = new THREE.PlaneGeometry(
       geoWidth,
       geoDepth,
@@ -81,7 +81,7 @@ self.onmessage = function (e) {
       x = i - z * xVertices;
       z = z * ( geoDepth / Math.floor( geoDepth / Math.pow(4,this._currentGeometryDistanceIndex) ) );
       x = x * ( geoWidth / Math.floor( geoWidth / Math.pow(4,this._currentGeometryDistanceIndex) ) );
-      newGeometry.vertices[i].y = ( 1 / Math.pow(4,this._currentGeometryDistanceIndex) ) + self._heightMap[_getHeightMapArrayPosition(Math.floor(startWidth + x), Math.floor(startDepth + z), self._width)];
+      newGeometry.vertices[i].y = 0;//( 1 / Math.pow(4,this._currentGeometryDistanceIndex) ) + self._heightMap[_getHeightMapArrayPosition(Math.floor(startWidth + x), Math.floor(startDepth + z), self._width)];
     }
 
     var vertices = newGeometry.vertices;
@@ -91,6 +91,8 @@ self.onmessage = function (e) {
       id: self._id,
       mapChunkIndex: mapChunkIndex,
       distanceIndex: currentGeometryDistanceIndex,
+      xOffset: xOffset,
+      zOffset: zOffset,
       vertices: vertices
     }/*,[vertices]*/);
   }

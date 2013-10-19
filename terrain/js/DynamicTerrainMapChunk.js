@@ -30,7 +30,7 @@ THREE.DynamicTerrainMapChunk = function () {
 THREE.DynamicTerrainMapChunk.detailRanges = [
 	150,
   250,
-  500
+  1000
 ];
 
 THREE.DynamicTerrainMapChunk.prototype = {
@@ -82,7 +82,7 @@ THREE.DynamicTerrainMapChunk.prototype = {
     this.checkGeometry();
   },
 
-  updateChunkGeometry: function (distanceIndex, vertices) {
+  updateChunkGeometry: function (distanceIndex, xOffset, zOffset, vertices) {
 
     var xVertices = Math.floor( this._width / Math.pow(4,distanceIndex) );
     var zVertices = Math.floor( this._depth / Math.pow(4,distanceIndex) );
@@ -107,7 +107,7 @@ THREE.DynamicTerrainMapChunk.prototype = {
       this._material
     );
 
-    this._mesh.position.set(this._position.x,this._position.y,this._position.z);
+    this._mesh.position.set(this._position.x + xOffset,this._position.y,this._position.z + zOffset);
     this._scene.add(this._mesh);
 
     this._updating = false;
