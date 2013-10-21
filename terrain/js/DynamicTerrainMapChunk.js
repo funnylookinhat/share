@@ -82,10 +82,8 @@ THREE.DynamicTerrainMapChunk.prototype = {
     this.checkGeometry();
   },
 
-  updateChunkGeometry: function (distanceIndex, xOffset, zOffset, vertices) {
+  updateChunkGeometry: function (distanceIndex, xVertices, zVertices, xOffset, zOffset, vertices) {
 
-    var xVertices = Math.floor( this._width / Math.pow(4,distanceIndex) );
-    var zVertices = Math.floor( this._depth / Math.pow(4,distanceIndex) );
     var newGeometry = new THREE.PlaneGeometry(
       this._width,
       this._depth,

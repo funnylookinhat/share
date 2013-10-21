@@ -199,8 +199,8 @@ THREE.DynamicTerrainMap.prototype = {
       depth: this._depth,
       heightMap: this._heightMap,
       heightMapLength: this._heightMapLength,
-      sendChunkGeometry: function (index, distanceIndex, xOffset, zOffset, vertices) {
-        self._sendChunkGeometry(index, distanceIndex, xOffset, zOffset, vertices);
+      sendChunkGeometry: function (index, distanceIndex, xVertices, zVertices, xOffset, zOffset, vertices) {
+        self._sendChunkGeometry(index, distanceIndex, xVertices, zVertices, xOffset, zOffset, vertices);
       }
     });
 
@@ -267,8 +267,8 @@ THREE.DynamicTerrainMap.prototype = {
     callback();
   },
 
-  _sendChunkGeometry: function (index, distanceIndex, xOffset, zOffset, vertices) {
-    this._map[index].updateChunkGeometry(distanceIndex, xOffset, zOffset, vertices);
+  _sendChunkGeometry: function (index, distanceIndex, xVertices, zVertices, xOffset, zOffset, vertices) {
+    this._map[index].updateChunkGeometry(distanceIndex, xVertices, zVertices, xOffset, zOffset, vertices);
   },
 
   _getHeightMapArrayPosition: function (widthPosition, depthPosition) {

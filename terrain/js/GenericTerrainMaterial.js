@@ -19,22 +19,22 @@ THREE.GenericTerrainMaterial = function (parameters) {
 	this._textures.push({
 		label: 'grass',
 		url: 'resources/textures/reality/grass.png',
-		start: 10,
-		delta: 30
+		start: 60,
+		delta: 90
 	});
 
 	this._textures.push({
 		label: 'rock',
 		url: 'resources/textures/reality/rock.png',
-		start: 40,
+		start: 150,
 		delta: 15
 	});
 
 	this._textures.push({
 		label: 'snow',
 		url: 'resources/textures/reality/snow.png',
-		start: 55,
-		delta: 15
+		start: 190,
+		delta: 45
 	});
 
 	this._textureRepeat = parameters.textureRepeat ? parameters.textureRepeat : 10;

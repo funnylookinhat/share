@@ -13,7 +13,7 @@ var camera = new THREE.PerspectiveCamera(
   45,
   SCREEN_WIDTH / SCREEN_HEIGHT,
   1,
-  1000
+  2000
 );
 
 
@@ -29,7 +29,7 @@ renderer.autoClearColor = false;
 
 var cameraShift = 0;
 var cameraCheck = false;
-var cameraDelta = 1.0;//-0.5;
+var cameraDelta = 2.0;//-0.5;
 var cameraY = 200;
 
 var cameraCycle = 1;
@@ -139,7 +139,7 @@ terrainMap.init({
   camera: camera,
   material: material,
   imageUrl: 'storage/height-test-4700.png',
-  imageScale: 0.1,
+  imageScale: 0.5,
   flatWidth: 5000,	
   flatDepth: 5000,
   position: {x: 0, y: 0, z: 0},
