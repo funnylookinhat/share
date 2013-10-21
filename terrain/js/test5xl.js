@@ -1,4 +1,9 @@
 // Boring Stuff
+
+if( typeof useWorkers == "undefined" ) {
+  var useWorkers = false;
+}
+
 var canvas = document.createElement('canvas');
 document.getElementById('render').appendChild(canvas);
 var SCREEN_WIDTH = window.innerWidth;
@@ -138,7 +143,8 @@ terrainMap.init({
   flatWidth: 2500,	
   flatDepth: 2500,
   position: {x: 0, y: 0, z: 0},
-  debugMode: true
+  debugMode: true,
+  useWorkers: useWorkers ? true : false
 },init);
 
 
