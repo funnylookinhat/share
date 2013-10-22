@@ -17,7 +17,7 @@
 				vUv = uv;
 				vPosition = position;
 				
-				vPosition.y = vPosition.y + 1.3 * sin(radians(( time / 2.0 * 3.1415 ) * vPosition.x / 20.0)) + 1.1 * cos(radians(( time / 2.0 * 3.1415 ) * vPosition.z / 30.0));
+				vPosition.y = 50.0 * sin(radians(time * vPosition.x / 500.0)) + 0.5 * cos(radians(time * vPosition.z / 300.0));
 
 				gl_Position = projectionMatrix * modelViewMatrix * vec4(vPosition, 1);
 				
@@ -46,8 +46,8 @@
 
 		</script>
 
+
 		<div id="render"></div>
-		<script type="text/javascript"> var useWorkers = true; </script>
 		<script type="text/javascript" src="js/includes/jquery.min.js"></script>
 		<script type="text/javascript" src="js/includes/three.min.js"></script>
 		<script type="text/javascript" src="js/includes/stats.min.js"></script>
@@ -56,6 +56,6 @@
 		<script type="text/javascript" src="js/DynamicTerrainMapChunkBuilder.js"></script>
 		<script type="text/javascript" src="js/DynamicTerrainMap.js"></script>
 		<script type="text/javascript" src="js/GenericTerrainMaterial.js"></script>
-		<script type="text/javascript" src="js/test5xxlw.js"></script>
+		<script type="text/javascript" src="js/test6.js"></script>
 	</body>
 </html>
