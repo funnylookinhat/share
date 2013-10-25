@@ -39,8 +39,8 @@ renderer.autoClearColor = false;
 
 var cameraShift = 0;
 var cameraCheck = false;
-var cameraDelta = -5.0;//-0.5;
-var cameraY = 15;
+var cameraDelta = -20.0;//-0.5;
+var cameraY = 10;
 var cameraYDelta = 10;
 
 var cameraCycle = 2;
