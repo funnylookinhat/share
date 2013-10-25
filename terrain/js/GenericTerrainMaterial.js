@@ -19,7 +19,7 @@ THREE.GenericTerrainMaterial = function (parameters) {
 	this._textures.push({
 		label: 'grass',
 		url: 'resources/textures/reality/grass.png',
-		start: 60,
+		start: 100,
 		delta: 90
 	});
 
@@ -108,6 +108,7 @@ THREE.GenericTerrainMaterial.prototype.generateMaterial = function () {
 	return new THREE.ShaderMaterial({
 		uniforms: uniforms,
 		vertexShader: this._vertexShader(),
-		fragmentShader: this._fragmentShader()
+		fragmentShader: this._fragmentShader(),
+		shading: THREE.SmoothShading
 	});
 }
