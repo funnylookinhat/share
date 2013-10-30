@@ -13,7 +13,7 @@ var camera = new THREE.PerspectiveCamera(
   45,
   SCREEN_WIDTH / SCREEN_HEIGHT,
   1,
-  5000
+  10000
 );
 
 
