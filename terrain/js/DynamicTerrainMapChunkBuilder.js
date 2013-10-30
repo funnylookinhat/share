@@ -56,12 +56,16 @@ THREE.DynamicTerrainMapChunkBuilder.prototype._workerCallback = function (e, sel
     // Process
     var mapChunkIndex = e.data.mapChunkIndex;
     var distanceIndex = e.data.distanceIndex;
-    var vertices = e.data.vertices;
+    var bufferGeometryIndices = e.data.bufferGeometryIndices;
+    var bufferGeometryPositions = e.data.bufferGeometryPositions;
+    var bufferGeometryNormals = e.data.bufferGeometryNormals;
+    var bufferGeometryUvs = e.data.bufferGeometryUvs;
+    var bufferGeometryOffsets = e.data.bufferGeometryOffsets;
     var xVertices = e.data.xVertices;
     var zVertices = e.data.zVertices;
     var xOffset = e.data.xOffset;
     var zOffset = e.data.zOffset;
-    self._sendChunkGeometry(mapChunkIndex, distanceIndex, xVertices, zVertices, xOffset, zOffset, vertices);
+    self._sendChunkGeometry(mapChunkIndex, distanceIndex, xVertices, zVertices, xOffset, zOffset, bufferGeometryIndices,bufferGeometryPositions,bufferGeometryNormals,bufferGeometryUvs,bufferGeometryOffsets);
     // Grab the next
     self._getNextJob(workerId, self);
   }

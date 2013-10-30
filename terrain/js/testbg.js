@@ -122,7 +122,7 @@ window.addEventListener('resize', windowResize, false );
 // *** *** *** *** *** *** *** *** 
 
 function getFunHeight(x,z) {
-  return ( 100 * Math.sin( x / Math.PI * 2 ) + 50 * Math.cos( z / Math.PI / 4 ) );
+  return ( Math.random() * 10 * Math.sin( x / Math.PI * 2 / 10 ) + Math.random() * 10 * Math.cos( z / Math.PI / 4 ) );
 }
 
 function createBufferGeometry(widthLength,depthLength,widthVertices,depthVertices) {
@@ -458,7 +458,7 @@ function createGeometry2() {
 
 var meshes = [];
 
-var size = 100;
+var size = 500;
 
 for( var x = -2500; x <= 2500; x += size ) {
   for( var z = -2500; z <= 2500; z += size ) {

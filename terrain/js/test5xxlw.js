@@ -27,6 +27,8 @@ renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 renderer.autoClearColor = false;
 
 
+var controls = new THREE.OrbitControls( camera );
+
 var cameraShift = 0;
 var cameraCheck = false;
 var cameraDelta = 2.0;//-0.5;
@@ -42,6 +44,7 @@ var water;
 
 function render() {
   
+  /*
   cameraShift += Math.abs(cameraDelta*2);
   if( ! cameraCheck &&
   		cameraShift > 50 ) {
@@ -54,9 +57,10 @@ function render() {
   camera.position.x += cameraDelta;
   camera.position.z += cameraDelta;
   camera.position.y = cameraY;
-
+  */
   water.material.uniforms.time.value = ( ( new Date().getTime() / 1000 ) % 10 );
 
+  /*
   if( cameraCycle == 1 ) {
     if( camera.position.x < ( -0.5 * terrainMap.width() &&
       cameraDelta < 0 ) ) {
@@ -78,6 +82,8 @@ function render() {
       
     }
   }
+  */
+  controls.update();
 
   renderer.render(scene, camera);
   

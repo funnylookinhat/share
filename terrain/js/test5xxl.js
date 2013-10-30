@@ -13,7 +13,7 @@ var camera = new THREE.PerspectiveCamera(
   45,
   SCREEN_WIDTH / SCREEN_HEIGHT,
   1,
-  2000
+  5000
 );
 
 
@@ -147,7 +147,7 @@ terrainMap.init({
   useWorkers: useWorkers ? true : false
 },init);
 
-
+/*
 var fullAreaGeometry = new THREE.PlaneGeometry(
   5000,
   5000,
@@ -163,6 +163,6 @@ var fullAreaMesh = new THREE.Mesh(
   })
 );
 scene.add(fullAreaMesh);
-
+*/
 //terrainMap.initWithImage("/storage/height-test-small.png",[0.1,0.1,0.1,0.1],init);
 

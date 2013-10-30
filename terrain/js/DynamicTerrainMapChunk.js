@@ -29,9 +29,9 @@ THREE.DynamicTerrainMapChunk = function () {
 
 THREE.DynamicTerrainMapChunk.detailRanges = [
 	150,
-  500,
-  2000,
-  5000
+  1000,
+  5000,
+  10000
 ];
 
 THREE.DynamicTerrainMapChunk.prototype = {
@@ -83,16 +83,42 @@ THREE.DynamicTerrainMapChunk.prototype = {
     this.checkGeometry();
   },
 
-  updateChunkGeometry: function (distanceIndex, xVertices, zVertices, xOffset, zOffset, vertices) {
+  updateChunkGeometry: function (distanceIndex, xVertices, zVertices, xOffset, zOffset, bufferGeometryIndices,bufferGeometryPositions,bufferGeometryNormals,bufferGeometryUvs,bufferGeometryOffsets) {
 
-    var newGeometry = new THREE.PlaneGeometry(
-      this._width,
-      this._depth,
-      xVertices - 1,
-      zVertices - 1
-    );
-    newGeometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
-    newGeometry.vertices = vertices;
+    var numberOfVerts = xVertices * zVertices;
+    var triangles = ( xVertices - 1 ) * ( zVertices - 1 ) * 2;
+    
+    var bufferGeometryIndicesLength = (triangles * 3);
+    var bufferGeometryPositionsLength = (numberOfVerts * 3);
+    var bufferGeometryNormalsLength = (numberOfVerts * 3);
+    var bufferGeometryUvsLength = (numberOfVerts * 2);
+
+    var bufferGeometry = new THREE.BufferGeometry();
+    
+    bufferGeometry.attributes = {
+      index: {
+        itemSize: 1,
+        array: bufferGeometryIndices,
+        numItems: bufferGeometryIndicesLength
+      },
+      position: {
+        itemSize: 3,
+        array: bufferGeometryPositions,
+        numItems: bufferGeometryPositionsLength
+      },
+      normal: {
+        itemSize: 3,
+        array: bufferGeometryNormals,
+        numItems: bufferGeometryNormalsLength
+      },
+      uv: {
+        itemSize: 2,
+        array: bufferGeometryUvs,
+        numItems: bufferGeometryUvsLength
+      }
+    };
+    
+    bufferGeometry.offsets = bufferGeometryOffsets;
 
     if( this._mesh != null ) {
       this._scene.remove(this._mesh);
@@ -100,7 +126,7 @@ THREE.DynamicTerrainMapChunk.prototype = {
       delete this._geometry;
     }
 
-    this._geometry = newGeometry;
+    this._geometry = bufferGeometry;
     this._mesh = new THREE.Mesh(
       this._geometry,
       this._material

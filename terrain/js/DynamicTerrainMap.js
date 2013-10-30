@@ -21,7 +21,7 @@ THREE.DynamicTerrainMap = function () {
 }
 
 // Statics
-THREE.DynamicTerrainMap._mapChunkSize = 100;
+THREE.DynamicTerrainMap._mapChunkSize = 500;
 
 THREE.DynamicTerrainMap._debugModeColors = [
   0x414141,
@@ -199,8 +199,8 @@ THREE.DynamicTerrainMap.prototype = {
       depth: this._depth,
       heightMap: this._heightMap,
       heightMapLength: this._heightMapLength,
-      sendChunkGeometry: function (index, distanceIndex, xVertices, zVertices, xOffset, zOffset, vertices) {
-        self._sendChunkGeometry(index, distanceIndex, xVertices, zVertices, xOffset, zOffset, vertices);
+      sendChunkGeometry: function (index, distanceIndex, xVertices, zVertices, xOffset, zOffset, bufferGeometryIndices,bufferGeometryPositions,bufferGeometryNormals,bufferGeometryUvs,bufferGeometryOffsets) {
+        self._sendChunkGeometry(index, distanceIndex, xVertices, zVertices, xOffset, zOffset, bufferGeometryIndices,bufferGeometryPositions,bufferGeometryNormals,bufferGeometryUvs,bufferGeometryOffsets);
       }
     });
 
@@ -267,8 +267,8 @@ THREE.DynamicTerrainMap.prototype = {
     callback();
   },
 
-  _sendChunkGeometry: function (index, distanceIndex, xVertices, zVertices, xOffset, zOffset, vertices) {
-    this._map[index].updateChunkGeometry(distanceIndex, xVertices, zVertices, xOffset, zOffset, vertices);
+  _sendChunkGeometry: function (index, distanceIndex, xVertices, zVertices, xOffset, zOffset, bufferGeometryIndices,bufferGeometryPositions,bufferGeometryNormals,bufferGeometryUvs,bufferGeometryOffsets) {
+    this._map[index].updateChunkGeometry(distanceIndex, xVertices, zVertices, xOffset, zOffset, bufferGeometryIndices,bufferGeometryPositions,bufferGeometryNormals,bufferGeometryUvs,bufferGeometryOffsets);
   },
 
   _getHeightMapArrayPosition: function (widthPosition, depthPosition) {
