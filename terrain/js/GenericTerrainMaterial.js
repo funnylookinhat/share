@@ -109,6 +109,7 @@ THREE.GenericTerrainMaterial.prototype.generateMaterial = function () {
 		uniforms: uniforms,
 		vertexShader: this._vertexShader(),
 		fragmentShader: this._fragmentShader(),
-		shading: THREE.SmoothShading
+		shading: THREE.SmoothShading,
+		polygonOffset: true
 	});
 }
