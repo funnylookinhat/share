@@ -13,7 +13,7 @@ var camera = new THREE.PerspectiveCamera(
   45,
   SCREEN_WIDTH / SCREEN_HEIGHT,
   1,
-  1000
+  4000
 );
 
 
@@ -139,7 +139,7 @@ terrainMap.init({
   camera: camera,
   material: material,
   imageUrl: 'storage/height-test-3700x3800.png',
-  imageScale: 0.5,
+  imageScale: 0.3,
   flatWidth: 2500,	
   flatDepth: 2500,
   position: {x: 0, y: 0, z: 0},
