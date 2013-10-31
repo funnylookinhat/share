@@ -159,7 +159,7 @@ terrainMap.init({
 },init);
 
 
-var waterGeometry = new THREE.PlaneGeometry( 5000, 5000, 2, 2 );
+var waterGeometry = new THREE.PlaneGeometry( 7000, 7000, 2, 2 );
 waterGeometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
 for( var i = 0; i < waterGeometry.vertices.length; i++ ) {
   waterGeometry.vertices[i].y = 0.5;
@@ -180,7 +180,7 @@ water = new THREE.Mesh(
 );
 
 water.dynamic = true;
-water.position.set(0,0,1);
+water.position.set(0,1,0);
 scene.add(water);
 
 //terrainMap.initWithImage("/storage/height-test-small.png",[0.1,0.1,0.1,0.1],init);

@@ -13,6 +13,7 @@ THREE.DynamicTerrainMap = function () {
   this._heightMapLength = null;
   this._material = null;
   this._camera = null;
+  this._cameraDelta = 0;
   this._scene = null;
   this._position = null;
   this._debugMode = false;
@@ -32,6 +33,8 @@ THREE.DynamicTerrainMap._debugModeColors = [
   0xa6a400,
   0xbf3030
 ];
+
+THREE.DynamicTerrainMap._cameraDeltaThreshold = 100;
 
 THREE.DynamicTerrainMap.prototype = {
   

@@ -2,22 +2,14 @@
  * Doc this
  */
 
-THREE.MapControls = function ( object, domElement ) {
+THREE.MapControls = function ( parameters ) { //object, domElement ) {
 
-	this.object = object;
-	this.domElement = ( domElement !== undefined ) ? domElement : document;
+	this.center = parameters.center ? parameters.center : {x:0, y:0, z:0};
+	this.center.y = 0;
 
-	// API
-
-	// Set to false to disable this control
-	this.enabled = true;
-
-	// "target" sets the location of focus, where the control orbits around
-	// and where it pans with respect to.
-	this.target = new THREE.Vector3();
-	// center is old, deprecated; use "target" instead
-	this.center = this.target;
-
+	this.domElement = parameters.domElement ? parameters.domElement : document;
+	
+	
 	// This option actually enables dollying in and out; left as "zoom" for
 	// backwards compatibility
 	this.noZoom = false;

@@ -1,5 +1,16 @@
 // Boring Stuff
 
+var stats = new Stats();
+stats.setMode(0); // 0: fps, 1: ms
+
+// Align top-left
+stats.domElement.style.position = 'absolute';
+stats.domElement.style.left = '0px';
+stats.domElement.style.top = '0px';
+stats.domElement.style.zIndex = '2';
+
+document.body.appendChild( stats.domElement );
+
 if( typeof useWorkers == "undefined" ) {
   var useWorkers = false;
 }
@@ -13,7 +24,7 @@ var camera = new THREE.PerspectiveCamera(
   45,
   SCREEN_WIDTH / SCREEN_HEIGHT,
   1,
-  5000
+  15000
 );
 
 
@@ -29,7 +40,7 @@ renderer.autoClearColor = false;
 
 var cameraShift = 0;
 var cameraCheck = false;
-var cameraDelta = 2.0;//-0.5;
+var cameraDelta = 10.0;//-0.5;
 var cameraY = 200;
 
 var cameraCycle = 1;
@@ -38,7 +49,7 @@ var cameraAngle = 0;
 var a = 0.01;
 var time;
 function render() {
-  
+  stats.begin();
   cameraShift += Math.abs(cameraDelta*2);
   if( ! cameraCheck &&
   		cameraShift > 50 ) {
@@ -53,8 +64,8 @@ function render() {
   camera.position.y = cameraY;
 
   if( cameraCycle == 1 ) {
-    if( camera.position.x < ( -0.5 * terrainMap.width() &&
-      cameraDelta < 0 ) ) {
+    if( camera.position.x < -0.5 * terrainMap.width() &&
+      cameraDelta < 0 ) {
       cameraDelta = cameraDelta * -1
     } else if ( camera.position.x > ( 0.5 * terrainMap.width() ) && 
                 cameraDelta > 0 ) {
@@ -75,7 +86,7 @@ function render() {
   }
 
   renderer.render(scene, camera);
-  
+  stats.end();
   a += 0.01;
 }
 
@@ -124,16 +135,12 @@ function windowResize () {
 
 window.addEventListener('resize', windowResize, false );
 
-var genericTerrainMaterial = new THREE.GenericTerrainMaterial();
-var material = genericTerrainMaterial.generateMaterial();
-
 var genericWireframeMaterial = new THREE.GenericWireframeMaterial({
-  repeat: 50.0,
-  width: 0.01,
-  color: new THREE.Color(0x336699)
+	repeat: 50.0,
+	width: 0.01,
+	color: new THREE.Color(0x336699)
 });
-material = genericWireframeMaterial.generateMaterial();
-
+var material = genericWireframeMaterial.generateMaterial();
 /*
 material = new THREE.MeshBasicMaterial({
   color: 0x333333,
@@ -146,10 +153,8 @@ terrainMap.init({
   scene: scene,
   camera: camera,
   material: material,
-  imageUrl: 'storage/height-test-4700.png',
-  imageScale: 1.0,
-  flatWidth: 5000,	
-  flatDepth: 5000,
+  flatWidth: 10000,	
+  flatDepth: 10000,
   position: {x: 0, y: 0, z: 0},
   debugMode: false,
   useWorkers: useWorkers ? true : false
