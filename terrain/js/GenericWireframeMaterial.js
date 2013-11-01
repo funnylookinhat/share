@@ -35,8 +35,8 @@ THREE.GenericWireframeMaterial.prototype._fragmentShader = function () {
 
 	shader.push('float alpha = 0.0;')
 
-	shader.push('float xPos = wPosition.x / '+parseFloat(this._repeat).toFixed(1)+';');
-	shader.push('float zPos = wPosition.z / '+parseFloat(this._repeat).toFixed(1)+';');
+	shader.push('float xPos = vPosition.x / '+parseFloat(this._repeat).toFixed(1)+';');
+	shader.push('float zPos = vPosition.z / '+parseFloat(this._repeat).toFixed(1)+';');
 	
 	shader.push('float lowVal = 0.0 + '+parseFloat(this._width).toFixed(3)+';');
 	shader.push('float highVal = 1.0 - '+parseFloat(this._width).toFixed(3)+';');
@@ -75,6 +75,7 @@ THREE.GenericWireframeMaterial.prototype.generateMaterial = function () {
 	return new THREE.ShaderMaterial({
 		vertexShader: this._vertexShader(),
 		fragmentShader: this._fragmentShader(),
-		shading: THREE.SmoothShading
+		shading: THREE.SmoothShading,
+		transparent: true
 	});
 }
