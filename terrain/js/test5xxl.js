@@ -1,5 +1,16 @@
 // Boring Stuff
 
+var stats = new Stats();
+stats.setMode(0); // 0: fps, 1: ms
+
+// Align top-left
+stats.domElement.style.position = 'absolute';
+stats.domElement.style.left = '0px';
+stats.domElement.style.top = '0px';
+stats.domElement.style.zIndex = '2';
+
+document.body.appendChild( stats.domElement );
+
 if( typeof useWorkers == "undefined" ) {
   var useWorkers = false;
 }
@@ -39,7 +50,7 @@ var cameraAngle = 0;
 var a = 0.01;
 var time;
 function render() {
-  
+  stats.begin();
   cameraShift += Math.abs(cameraDelta*2);
   if( ! cameraCheck &&
   		cameraShift > 50 ) {
@@ -81,7 +92,7 @@ function render() {
   }
 
   renderer.render(scene, camera);
-  
+  stats.end();
   a += 0.01;
 }
 
@@ -136,8 +147,8 @@ var genericTerrainMaterial = new THREE.GenericTerrainMaterial();
 var material = genericTerrainMaterial.generateMaterial();
 
 var genericWireframeMaterial = new THREE.GenericWireframeMaterial({
-  repeat: 50.0,
-  width: 0.01,
+  repeat: 10.0,
+  width: 0.005,
   color: new THREE.Color(0x336699)
 });
 material = genericWireframeMaterial.generateMaterial();

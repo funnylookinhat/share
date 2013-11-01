@@ -210,8 +210,8 @@ THREE.DynamicTerrainMap.prototype = {
 
     this._map = [];
     var self = this;
-    var widthStart = this._position.x - Math.floor( this._width / 2 );
-    var depthStart = this._position.z - Math.floor( this._depth / 2 );
+    var widthStart = this._position.x - Math.floor( this._width / 2 ) + ( THREE.DynamicTerrainMap._mapChunkSize / 2 );
+    var depthStart = this._position.z - Math.floor( this._depth / 2 ) + ( THREE.DynamicTerrainMap._mapChunkSize / 2 );
     for( var j = 0; j < Math.ceil(this._width / THREE.DynamicTerrainMap._mapChunkSize); j++ ) {
       for( var k = 0; k < Math.ceil(this._depth / THREE.DynamicTerrainMap._mapChunkSize); k++ ) { 
         var mapChunkIndex = ( j + k * Math.ceil(this._width / THREE.DynamicTerrainMap._mapChunkSize) );

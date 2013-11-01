@@ -46,6 +46,7 @@ THREE.GenericTerrainMaterial.prototype._fragmentShader = function () {
 	var shader = [];
 	shader.push('varying vec2 vUv;');
 	shader.push('varying vec3 vPosition;');
+	shader.push("varying vec4 wPosition;");
 	for( var i = 0; i < this._textures.length; i++ ) {
 		shader.push('uniform sampler2D texture_'+this._textures[i].label+';');
 	}
@@ -77,10 +78,12 @@ THREE.GenericTerrainMaterial.prototype._vertexShader = function () {
 
 	shader.push("varying vec2 vUv;");
 	shader.push("varying vec3 vPosition;");
+	shader.push("varying vec4 wPosition;");
 	shader.push("uniform float textureRepeat;");
 	shader.push("void main( void ) {");
 	shader.push("vUv = uv * textureRepeat;");
 	shader.push("vPosition = position;");
+	shader.push("wPosition = modelMatrix * vec4(vPosition,1);");
 	shader.push("gl_Position = projectionMatrix * modelViewMatrix * vec4(vPosition, 1);");
 	shader.push("}");
 
