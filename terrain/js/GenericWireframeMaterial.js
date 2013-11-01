@@ -33,21 +33,32 @@ THREE.GenericWireframeMaterial.prototype._fragmentShader = function () {
 	
 	shader.push('void main() {');
 
-	shader.push('float alpha = 0.0;')
+	shader.push('float alpha = 0.15;')
 
-	shader.push('float xPos = vPosition.x / '+parseFloat(this._repeat).toFixed(1)+';');
-	shader.push('float zPos = vPosition.z / '+parseFloat(this._repeat).toFixed(1)+';');
+	shader.push('float xPos = wPosition.x / '+parseFloat(this._repeat).toFixed(1)+';');
+	shader.push('float zPos = wPosition.z / '+parseFloat(this._repeat).toFixed(1)+';');
 	
 	shader.push('float lowVal = 0.0 + '+parseFloat(this._width).toFixed(3)+';');
 	shader.push('float highVal = 1.0 - '+parseFloat(this._width).toFixed(3)+';');
 
-	shader.push('if( fract(xPos) < lowVal || fract(xPos) > highVal || fract(zPos) < lowVal || fract(zPos) > highVal ) { alpha = 1.0; }');
+	
 
 	var rDec = parseFloat(this._color.r * 255).toFixed(1);
 	var gDec = parseFloat(this._color.g * 255).toFixed(1);
 	var bDec = parseFloat(this._color.b * 255).toFixed(1);
 
+	/*
+	shader.push('if( fract(xPos) < lowVal || fract(xPos) > highVal || fract(zPos) < lowVal || fract(zPos) > highVal ) { alpha = 1.0; }');
 	shader.push('gl_FragColor = vec4('+rDec+'/255.0,'+gDec+'/255.0,'+bDec+'/255.0,alpha);');
+	*/
+
+	shader.push('if( fract(xPos) < lowVal || fract(xPos) > highVal || fract(zPos) < lowVal || fract(zPos) > highVal ) {');
+	shader.push('alpha = 1.0;');
+	shader.push('gl_FragColor = vec4('+rDec+'/255.0,'+gDec+'/255.0,'+bDec+'/255.0,alpha);');
+	shader.push('} else {');
+	shader.push('gl_FragColor = vec4('+rDec+'/255.0,'+bDec+'/255.0,'+rDec+'/255.0,alpha);');
+	shader.push('}');
+
 	shader.push('}');
 	
 	//console.log(shader.join("\n"));
@@ -63,7 +74,7 @@ THREE.GenericWireframeMaterial.prototype._vertexShader = function () {
 	shader.push("void main( void ) {");
 	shader.push("vUv = uv;");
 	shader.push("vPosition = position;");
-	shader.push("wPosition = modelViewMatrix * vec4(vPosition,1);");
+	shader.push("wPosition = modelMatrix * vec4(vPosition,1);");
 	shader.push("gl_Position = projectionMatrix * modelViewMatrix * vec4(vPosition, 1);");
 	shader.push("}");
 
