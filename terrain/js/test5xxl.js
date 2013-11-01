@@ -29,8 +29,9 @@ renderer.autoClearColor = false;
 
 var cameraShift = 0;
 var cameraCheck = false;
-var cameraDelta = 2.0;//-0.5;
+var cameraDelta = 5.0;//-0.5;
 var cameraY = 200;
+var cameraYDelta = 1.5;
 
 var cameraCycle = 1;
 var cameraAngle = 0;
@@ -50,11 +51,16 @@ function render() {
   }
   camera.position.x += cameraDelta;
   camera.position.z += cameraDelta;
-  camera.position.y = cameraY;
+  camera.position.y += cameraYDelta;
+
+  if( ( camera.position.y > 300 && cameraYDelta > 0 ) ||
+      ( camera.position.y < 100 && cameraYDelta < 0 ) ) {
+    cameraYDelta *= -1;
+  }
 
   if( cameraCycle == 1 ) {
-    if( camera.position.x < ( -0.5 * terrainMap.width() &&
-      cameraDelta < 0 ) ) {
+    if( camera.position.x < ( -0.5 * terrainMap.width() ) &&
+      cameraDelta < 0 ) {
       cameraDelta = cameraDelta * -1
     } else if ( camera.position.x > ( 0.5 * terrainMap.width() ) && 
                 cameraDelta > 0 ) {
