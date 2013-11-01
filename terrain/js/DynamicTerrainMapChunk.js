@@ -131,7 +131,7 @@ THREE.DynamicTerrainMapChunk.prototype = {
       this._geometry,
       this._material
     );
-
+    
     this._mesh.position.set(this._position.x + xOffset,this._position.y,this._position.z + zOffset);
     this._scene.add(this._mesh);
 

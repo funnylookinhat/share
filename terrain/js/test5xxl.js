@@ -79,9 +79,11 @@ function render() {
   a += 0.01;
 }
 
+/*
 setInterval(function() {
 	console.log('CAMERA: '+camera.position.x+','+camera.position.y+','+camera.position.z);
 },1000);
+*/
 
 function init() {
   console.log('Terrain ready! WxD: '+terrainMap.width()+'x'+terrainMap.depth());

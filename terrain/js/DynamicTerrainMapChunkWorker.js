@@ -14,6 +14,7 @@ self.onmessage = function (e) {
   if( e.data.action == 'init' ) {
     self._id = e.data.actionData.id;
     self._width = e.data.actionData.width;
+    self._depth = e.data.actionData.depth;
     self._heightMap = e.data.actionData.heightMap;
     self._heightMapLength = e.data.actionData.heightapLength;
 
@@ -41,7 +42,6 @@ self.onmessage = function (e) {
     var xOffset = 0;
     var zOffset = 0;
     var geoIncrement = Math.pow(4,currentGeometryDistanceIndex);
-
     
     if( heightMapWidthZero != 0 ) {
       geoWidth += geoIncrement;
@@ -59,7 +59,7 @@ self.onmessage = function (e) {
     if( heightMapDepthZero != 0 ) {
       geoDepth += geoIncrement;
       zVertices++;
-      zOffset -= geoIncrement / 2;
+      zOffset -= (geoIncrement / 2);
       startDepth -= geoIncrement;
     }
     
@@ -68,6 +68,7 @@ self.onmessage = function (e) {
       zVertices++;
       zOffset += geoIncrement / 2;
     }
+    
     
     // var bufferGeometry = _createBufferGeometry(geoWidth,geoDepth,xVertices,zVertices,xOffset,zOffset,self._width);
     
