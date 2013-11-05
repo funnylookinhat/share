@@ -22,6 +22,8 @@ THREE.MapControls = function (parameters) {
   this._minPhi = 0;
   this._maxPhi = Math.PI / 2;
 
+  this._minCameraRadius = 5;
+
   this._minVelocity = 0.05; // Where we cut off and assume 0.
   this._friction = 0.0002;
   this._acceleration = 3.0;
@@ -149,7 +151,6 @@ THREE.MapControls.prototype = {
       }
     }
     if( vector[0] != 0 || vector[1] != 0 ) {
-      console.log('VECTOR: ['+vector[0].toString()+','+vector[1].toString()+']');
       this._centerAccelerationValue = this._acceleration;
       this._centerAccelerationAngle = this._cameraTheta - Math.PI + this._vectorAngles[vector[0].toString()][vector[1].toString()];
     } else {
@@ -239,6 +240,9 @@ THREE.MapControls.prototype = {
       delta = event.detail * 10;
     }
     self._cameraRadius += delta;
+    if( self._cameraRadius < self._minCameraRadius ) {
+      self._cameraRadius = self._minCameraRadius;
+    }
   },
 
   init: function () {
