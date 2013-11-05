@@ -27,8 +27,13 @@ renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 renderer.autoClearColor = false;
 
 
+var terrainMap;
+
 var controls = new THREE.MapControls({
-  camera: camera
+  camera: camera,
+  moveCallback: function () {
+    terrainMap.checkGeometry();
+  }
 });
 
 controls.init();
@@ -150,7 +155,7 @@ material = new THREE.MeshBasicMaterial({
 });
 */
 // Start
-var terrainMap = new THREE.DynamicTerrainMap();
+terrainMap = new THREE.DynamicTerrainMap();
 terrainMap.init({
   scene: scene,
   camera: camera,

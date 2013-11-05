@@ -7,11 +7,17 @@ THREE.MapControls = function (parameters) {
   this._domElement = parameters.domElement ? parameters.domElement : document;
   this._camera = parameters.camera ? parameters.camera : null;
   this._moveCallback = parameters.moveCallback ? parameters.moveCallback : (function () { /* NADA */ });
-
+  this._moveCallbackDelta = parameters.moveCallbackDelta ? parameters.moveCallbackDelta : 250;
   if( this._camera == null ) {
     console.log("Cannot be used without a camera.");
     return;
   }
+
+  this._cameraPositionOld = {
+    x: this._camera.position.x,
+    y: this._camera.position.y,
+    z: this._camera.position.z
+  };
 
   this._cameraTheta = 0;
   this._cameraThetaDelta = 0;
@@ -36,11 +42,10 @@ THREE.MapControls = function (parameters) {
   };
   this._keyCenterMappings = {
     '87': [0,1],
-    '83': [0,-1],//-Math.PI,
-    '65': [-1,0],//-Math.PI / 2,
-    '68': [1,0]//Math.PI / 2
+    '83': [0,-1],
+    '65': [-1,0],
+    '68': [1,0]
   };
-
   this._vectorAngles = {
     '-1': {
       '-1': -3 * Math.PI / 4,
@@ -83,19 +88,6 @@ THREE.MapControls = function (parameters) {
   this._centerAccelerationValue = 0;
   this._centerVelocity = {x: 0, z: 0};
   this._lastTime = Date.now();
-  
-  /*
-  this.domElement.addEventListener( 'contextmenu', function ( event ) { event.preventDefault(); }, false );
-  this.domElement.addEventListener( 'mousedown', onMouseDown, false );
-  this.domElement.addEventListener( 'mousewheel', onMouseWheel, false );
-  this.domElement.addEventListener( 'DOMMouseScroll', onMouseWheel, false ); // firefox
-
-  this.domElement.addEventListener( 'keydown', onKeyDown, false );
-
-  this.domElement.addEventListener( 'touchstart', touchstart, false );
-  this.domElement.addEventListener( 'touchend', touchend, false );
-  this.domElement.addEventListener( 'touchmove', touchmove, false );
-  */
 }
 
 THREE.MapControls.prototype = {
@@ -140,6 +132,21 @@ THREE.MapControls.prototype = {
     this._camera.position.z = this._center.z + Math.sin(this._cameraTheta) * this._cameraRadius;
     this._camera.position.y = this._center.y + Math.sin(this._cameraPhi) * this._cameraRadius;
     this._camera.lookAt(this._center);
+
+    if( Math.sqrt( 
+        Math.pow(this._camera.position.x - this._cameraPositionOld.x,2) + 
+        Math.pow(this._camera.position.y - this._cameraPositionOld.y,2) + 
+        Math.pow(this._camera.position.z - this._cameraPositionOld.z,2)) >= this._moveCallbackDelta ) {
+      this._cameraPositionOld = {
+        x: this._camera.position.x,
+        y: this._camera.position.y,
+        z: this._camera.position.z
+      };
+      this._moveCallback();
+    }
+
+    this._cameraPositionOld
+
   },
 
   _updateAcceleration: function () {
