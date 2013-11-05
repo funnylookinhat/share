@@ -231,20 +231,14 @@ THREE.MapControls.prototype = {
     } 
   },
 
-  mouseDown: function (event) {
-
-  },
-
-  mouseUp: function (event) {
-
-  },
-
-  mouseMove: function (event) {
-
-  },
-
-  mouseWheel: function (event) {
-
+  mouseWheel: function (event, self) {
+    var delta = 0;
+    if ( event.wheelDelta ) { // WebKit / Opera / Explorer 9
+      delta = - event.wheelDelta;
+    } else if ( event.detail ) { // Firefox
+      delta = event.detail * 10;
+    }
+    self._cameraRadius += delta;
   },
 
   init: function () {
@@ -255,6 +249,12 @@ THREE.MapControls.prototype = {
     this._domElement.addEventListener( 'keyup',  function (event) {
       self.keyUp(event,self);
     }, false);
+    this._domElement.addEventListener( 'mousewheel', function (event) {
+      self.mouseWheel(event,self);
+    }, false );
+    this._domElement.addEventListener( 'DOMMouseScroll', function (event) {
+      self.mouseWheel(event,self);
+    }, false );
   }
 
 }
