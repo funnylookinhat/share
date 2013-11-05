@@ -33,11 +33,29 @@ THREE.MapControls = function (parameters) {
     '68': false
   };
   this._keyCenterMappings = {
-    '87': 0,
-    '83': Math.PI,
-    '65': 0,
-    '68': 0
+    '87': [0,1],
+    '83': [0,-1],//-Math.PI,
+    '65': [-1,0],//-Math.PI / 2,
+    '68': [1,0]//Math.PI / 2
   };
+
+  this._vectorAngles = {
+    '-1': {
+      '-1': -3 * Math.PI / 4,
+      '0': - Math.PI / 2,
+      '1': -Math.PI / 4
+    },
+    '0': {
+      '-1': -Math.PI,
+      '0': false,
+      '1': 0
+    }, 
+    '1': {
+      '-1': 3 * Math.PI / 4,
+      '0': Math.PI / 2,
+      '1': Math.PI / 4
+    } 
+  }
 
   this._activeThetaKeys = {
     '81': false,
@@ -106,7 +124,6 @@ THREE.MapControls.prototype = {
     if( Math.abs(this._centerVelocity.z) <= this._minVelocity ) {
       this._centerVelocity.z = 0;
     }
-    console.log('VELS: '+this._centerVelocity.x+','+this._centerVelocity.z);
   },
 
   updateCamera: function () {
@@ -124,15 +141,32 @@ THREE.MapControls.prototype = {
   },
 
   _updateAcceleration: function () {
-    var angle = this._cameraTheta + 3 * Math.PI / 4;
-    var acceleration = false;
+    var vector = [0,0];
     for( i in this._activeCenterKeys ) {
       if( this._activeCenterKeys[i] ) {
+        vector[0] += this._keyCenterMappings[i][0];
+        vector[1] += this._keyCenterMappings[i][1];
+      }
+    }
+    if( vector[0] != 0 || vector[1] != 0 ) {
+      console.log('VECTOR: ['+vector[0].toString()+','+vector[1].toString()+']');
+      this._centerAccelerationValue = this._acceleration;
+      this._centerAccelerationAngle = this._cameraTheta - Math.PI + this._vectorAngles[vector[0].toString()][vector[1].toString()];
+    } else {
+      this._centerAccelerationValue = 0;
+    }
+    /*
+    var angle = this._cameraTheta - Math.PI;
+    var acceleration = false;
+    var angleCount = 0;
+    for( i in this._activeCenterKeys ) {
+      if( this._activeCenterKeys[i] ) {
+        angleCount++;
         angle += this._keyCenterMappings[i];
         acceleration = true;
       }
     }
-    angle = angle % ( Math.PI * 2 );
+    angle = ( angle % ( Math.PI * 2 ) ) / angleCount;
     
     if( acceleration ) {
       this._centerAccelerationValue = this._acceleration;
@@ -140,6 +174,7 @@ THREE.MapControls.prototype = {
     } else {
       this._centerAccelerationValue = 0;
     }
+    */
   },
 
   _updateTheta: function () {
