@@ -224,10 +224,12 @@ THREE.DynamicTerrainMap.prototype = {
         var mapChunk = new THREE.DynamicTerrainMapChunk();
         var mapChunkMaterial = this._material;
         if( this._debugMode ) {
-          mapChunkMaterial = new THREE.MeshBasicMaterial({
-            color: THREE.DynamicTerrainMap._debugModeColors[Math.floor(Math.random() * THREE.DynamicTerrainMap._debugModeColors.length)],
-            wireframe: true
+          var genericWireframeMaterial = new THREE.GenericWireframeMaterial({
+            repeat: 10.0,
+            width: 0.005,
+            color: new THREE.Color(THREE.DynamicTerrainMap._debugModeColors[Math.floor(Math.random() * THREE.DynamicTerrainMap._debugModeColors.length)])
           });
+          mapChunkMaterial = genericWireframeMaterial.generateMaterial();
         }
 
         mapChunk.init({

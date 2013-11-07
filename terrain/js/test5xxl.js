@@ -146,19 +146,6 @@ window.addEventListener('resize', windowResize, false );
 var genericTerrainMaterial = new THREE.GenericTerrainMaterial();
 var material = genericTerrainMaterial.generateMaterial();
 
-var genericWireframeMaterial = new THREE.GenericWireframeMaterial({
-  repeat: 10.0,
-  width: 0.005,
-  color: new THREE.Color(0x336699)
-});
-material = genericWireframeMaterial.generateMaterial();
-
-/*
-material = new THREE.MeshBasicMaterial({
-  color: 0x333333,
-  wireframe: true
-});
-*/
 // Start
 var terrainMap = new THREE.DynamicTerrainMap();
 terrainMap.init({
@@ -167,10 +154,10 @@ terrainMap.init({
   material: material,
   imageUrl: 'storage/height-test-4700.png',
   imageScale: 1.0,
-  flatWidth: 5000,	
+  flatWidth: 5000,
   flatDepth: 5000,
   position: {x: 0, y: 0, z: 0},
-  debugMode: false,
+  debugMode: true,
   useWorkers: useWorkers ? true : false
 },init);
 
