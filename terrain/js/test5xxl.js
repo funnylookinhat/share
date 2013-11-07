@@ -40,7 +40,7 @@ renderer.autoClearColor = false;
 
 var cameraShift = 0;
 var cameraCheck = false;
-var cameraDelta = 5.0;//-0.5;
+var cameraDelta = 5.0;
 var cameraY = 200;
 var cameraYDelta = 1.5;
 

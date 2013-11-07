@@ -28,8 +28,9 @@ THREE.DynamicTerrainMapChunk = function () {
 }
 
 THREE.DynamicTerrainMapChunk.detailRanges = [
-	150,
-  1000,
+	750,
+  1500,
+  //1000,
   2500,
   10000
 ];
@@ -166,7 +167,7 @@ THREE.DynamicTerrainMapChunk.prototype = {
   _updateGeometry: function() {
     var self = this;
     this._updating = true;
-
+    console.log('UPDATING FOR INDEX: '+this._currentGeometryDistanceIndex);
     if( this._currentGeometryDistanceIndex >= THREE.DynamicTerrainMapChunk.detailRanges.length ) {
       if( this._mesh ) {
         scene.remove(this._mesh);

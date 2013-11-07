@@ -97,7 +97,7 @@ self.onmessage = function (e) {
       for( var z = 0; z < zVertices; z++ ) {
         var index = ( z * xVertices + x ) * 3;
         positions[index + 0] = startX + x * chunkX;  // X
-        positions[index + 1] = self._heightMap[_getHeightMapArrayPosition(xOffset + Math.round(chunkX * x) + startWidth, zOffset + Math.round(chunkZ * z) + startDepth, self._width)];
+        positions[index + 1] = self._heightMap[_getHeightMapArrayPosition((xOffset * 2) + Math.round(chunkX * x) + startWidth, (zOffset * 2) + Math.round(chunkZ * z) + startDepth, self._width)];
         positions[index + 2] = startZ + z * chunkZ;  // Z
 
         var uvIndex = ( z * xVertices + x ) * 2;
