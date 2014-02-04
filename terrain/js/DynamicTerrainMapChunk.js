@@ -28,9 +28,8 @@ THREE.DynamicTerrainMapChunk = function () {
 }
 
 THREE.DynamicTerrainMapChunk.detailRanges = [
-	750,
-  1500,
-  //1000,
+	100,
+  750,
   2500,
   10000
 ];
@@ -76,6 +75,9 @@ THREE.DynamicTerrainMapChunk.prototype = {
     this._buildChunkGeometry = options.buildChunkGeometry;
     this._useWorkers = options.useWorkers ? true : false;
 
+    this._currentXVertices = null;
+    this._currentZVertices = null;
+
     this._position = options.position.toString ? options.position : {x:0,y:0,z:0};
 
     // console.log("CREATING CHUNK AT "+this._position.x+','+this._position.z+' WITH ZEROS '+this._heightMapWidthZero+','+this._heightMapDepthZero);
@@ -85,6 +87,9 @@ THREE.DynamicTerrainMapChunk.prototype = {
   },
 
   updateChunkGeometry: function (distanceIndex, xVertices, zVertices, xOffset, zOffset, bufferGeometryIndices,bufferGeometryPositions,bufferGeometryNormals,bufferGeometryUvs,bufferGeometryOffsets) {
+
+    this._currentXVertices = xVertices;
+    this._currentZVertices = zVertices;
 
     var numberOfVerts = xVertices * zVertices;
     var triangles = ( xVertices - 1 ) * ( zVertices - 1 ) * 2;
@@ -164,6 +169,15 @@ THREE.DynamicTerrainMapChunk.prototype = {
     return this._position;
   },
 
+  // The height has already been updated in DynamicTerrainMap - but this flags that we should update
+  // the vertex.
+  setHeight: function (x,z,height) {
+    if( this._geometry ) {
+      // TODO - Figure out how to look up specific vertex and apply new height - then call
+      // this._geometry.verticesNeedUpdate = true;
+    }
+  },
+
   _updateGeometry: function() {
     var self = this;
     this._updating = true;
@@ -178,94 +192,127 @@ THREE.DynamicTerrainMapChunk.prototype = {
     }
 
     // Send our request to the chunk builder.
-      //this._buildChunkGeometry(this._mapIndex, this._currentGeometryDistanceIndex);
-    if( this._useWorkers ) {
-      this._buildChunkGeometry(
-        this._mapIndex, 
-        this._currentGeometryDistanceIndex,
-        this._heightMapWidthZero, 
-        this._heightMapDepthZero, 
-        this._width, 
-        this._depth);
+    if( self._useWorkers ) {
+      self._buildChunkGeometry(
+        self._mapIndex, 
+        self._currentGeometryDistanceIndex,
+        self._heightMapWidthZero, 
+        self._heightMapDepthZero, 
+        self._width, 
+        self._depth);
     } else {
-      var xVertices = Math.floor( this._width / Math.pow(4,this._currentGeometryDistanceIndex) );
-      var zVertices = Math.floor( this._depth / Math.pow(4,this._currentGeometryDistanceIndex) );
-
-      // THIS WORKS!
-      // if( this._currentGeometryDistanceIndex >= THREE.DynamicTerrainMapChunk.detailRanges.length ) {
-      //   xVertices = 2;
-      //   zVertices = 2;
-      // }
+      var xVertices = Math.floor( self._width / Math.pow(4,self._currentGeometryDistanceIndex) );
+      var zVertices = Math.floor( self._depth / Math.pow(4,self._currentGeometryDistanceIndex) );
 
       // Cheap rigging for overlapping
-      var geoWidth = this._width;
-      var geoDepth = this._depth;
-      var startWidth = this._heightMapWidthZero;
-      var startDepth = this._heightMapDepthZero;
+      var geoWidth = self._width;
+      var geoDepth = self._depth;
+      var startWidth = self._heightMapWidthZero;
+      var startDepth = self._heightMapDepthZero;
       var xOffset = 0;
       var zOffset = 0;
-      var geoIncrement = Math.pow(4,this._currentGeometryDistanceIndex);
+      var geoIncrement = Math.pow(4,self._currentGeometryDistanceIndex);
       
-      if( this._heightMapWidthZero != 0 ) {
+      if( self._heightMapWidthZero != 0 ) {
         geoWidth += geoIncrement;
         xVertices++;
         xOffset -= geoIncrement / 2;
         startWidth -= geoIncrement;
       }
-      if( ( this._heightMapWidthZero + this._width + geoIncrement ) < this._heightMapWidth ) {
+      
+      if( ( self._heightMapWidthZero + self._width + geoIncrement ) < self._heightMapWidth ) {
         geoWidth += geoIncrement;
         xVertices++;
         xOffset += geoIncrement / 2;
       }
-      if( this._heightMapDepthZero != 0 ) {
+      
+      if( self._heightMapDepthZero != 0 ) {
         geoDepth += geoIncrement;
         zVertices++;
-        zOffset -= geoIncrement / 2;
+        zOffset -= (geoIncrement / 2);
         startDepth -= geoIncrement;
       }
-      if( ( this._heightMapDepthZero + this._depth + geoIncrement ) < this._heightMapDepth ) {
+      
+      if( ( self._heightMapDepthZero + self._depth + geoIncrement ) < self._heightMapDepth ) {
         geoDepth += geoIncrement;
         zVertices++;
         zOffset += geoIncrement / 2;
       }
       
+      var numberOfVerts = xVertices * zVertices;
+      var triangles = ( xVertices - 1 ) * ( zVertices - 1 ) * 2;
+       
+      var indices = new Uint16Array(triangles * 3);
+      var indicesLength = (triangles * 3);
+      var positions = new Float32Array(numberOfVerts * 3);
+      var positionsLength = (numberOfVerts * 3);
+      var normals = new Float32Array(numberOfVerts * 3);
+      var normalsLength = (numberOfVerts * 3);
+      var uvs = new Float32Array(numberOfVerts * 2);
+      var uvsLength = (numberOfVerts * 2);
+      var offsets = [];
 
+      var chunkSize = 21845;
 
-      var newGeometry = new THREE.PlaneGeometry(
-        geoWidth,
-        geoDepth,
-        xVertices - 1,
-        zVertices - 1
-      );
-      newGeometry.applyMatrix( new THREE.Matrix4().makeRotationX( - Math.PI / 2 ) );
+      var startX = -geoWidth / 2;
+      var startZ = -geoDepth / 2;
+      var chunkX = geoWidth / ( xVertices - 1 );
+      var chunkZ = geoDepth / ( zVertices - 1 );
 
-      // Heightmap test
-      var x = 0;
-      var z = 0;
-      for( var i = 0; i < newGeometry.vertices.length; i++ ) {
-        z = Math.floor( i / xVertices );
-        x = i - z * xVertices;
-        z = z * ( geoDepth / Math.floor( geoDepth / Math.pow(4,this._currentGeometryDistanceIndex) ) );
-        x = x * ( geoWidth / Math.floor( geoWidth / Math.pow(4,this._currentGeometryDistanceIndex) ) );
-        newGeometry.vertices[i].y = ( 1 / Math.pow(4,this._currentGeometryDistanceIndex) ) + this._heightMap[this._getHeightMapArrayPosition(Math.floor(startWidth + x), Math.floor(startDepth + z))];
+      // Create Vertices
+      for( var x = 0; x < xVertices; x++ ) {
+        for( var z = 0; z < zVertices; z++ ) {
+          var index = ( z * xVertices + x ) * 3;
+          positions[index + 0] = startX + x * chunkX;  // X
+          positions[index + 1] = self._heightMap[self._getHeightMapArrayPosition((xOffset * 2) + Math.round(chunkX * x) + startWidth, (zOffset * 2) + Math.round(chunkZ * z) + startDepth, self._width)];
+          positions[index + 2] = startZ + z * chunkZ;  // Z
+
+          var uvIndex = ( z * xVertices + x ) * 2;
+          uvs[uvIndex + 0] = x / ( xVertices - 1 );
+          uvs[uvIndex + 1] = 1.0 - z / ( zVertices - 1 );
+        }
       }
-      
-      if( this._mesh != null ) {
-        scene.remove(this._mesh);
-        delete this._mesh;
-        delete this._geometry;
+
+      // Create Chunks and Indices
+      var lastChunkRow = 0;
+      var lastChunkVertStart = 0;
+
+      for (var x = 0; x < ( zVertices - 1 ); x++ ) {
+        var startVertIndex = x * xVertices;
+
+        if ((startVertIndex - lastChunkVertStart) + xVertices * 2 > chunkSize) {
+          var newChunk = {
+            start: lastChunkRow * ( xVertices - 1 ) * 6,
+            index: lastChunkVertStart,
+            count: (x - lastChunkRow) * ( xVertices - 1 ) * 6
+          };
+          offsets.push(newChunk);
+          lastChunkRow = x;
+          lastChunkVertStart = startVertIndex;
+        }
+
+        for (var z = 0; z < ( xVertices - 1 ); ++z) {
+          var index = (x * ( xVertices - 1 ) + z) * 6;
+          var vertIndex = (x * xVertices + z) - lastChunkVertStart;
+
+          indices[index + 0] = vertIndex;
+          indices[index + 1] = vertIndex + xVertices;
+          indices[index + 2] = vertIndex + 1;
+          indices[index + 3] = vertIndex + 1;
+          indices[index + 4] = vertIndex + xVertices;
+          indices[index + 5] = vertIndex + xVertices + 1;
+        }
       }
 
-      this._geometry = newGeometry;
-      this._mesh = new THREE.Mesh(
-        this._geometry,
-        this._material
-      );
+      var lastChunk = {
+        start: lastChunkRow * ( xVertices - 1 ) * 6,
+        index: lastChunkVertStart,
+        count: ( ( zVertices - 1 ) - lastChunkRow) * ( xVertices - 1 ) * 6
+      };
 
-      this._mesh.position.set(this._position.x + xOffset,this._position.y,this._position.z + zOffset);
-      this._scene.add(this._mesh);
+      offsets.push(lastChunk);
 
-      this._updating = false;
+      self.updateChunkGeometry(self._currentGeometryDistanceIndex, xVertices, zVertices, xOffset, zOffset, indices,positions,normals,uvs,offsets); 
     }
   },
 

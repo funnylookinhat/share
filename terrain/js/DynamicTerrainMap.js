@@ -5,6 +5,14 @@
  * camera position.
  */
 
+/*
+ADD PARAMETERS
+chunkSize
+chunkDetailRanges
+chunkHoverRange
+chunkHideLast
+ */
+
 THREE.DynamicTerrainMap = function () {
   this._width = null;
   this._depth = null;
@@ -19,10 +27,24 @@ THREE.DynamicTerrainMap = function () {
   this._debugMode = false;
   this._chunkBuilder = null;
   this._useWorkers = false;
+  this._mapChunkSize = null;
+  this._detailRanges = null;
+  this._chunkHoverRange = null;
+  this._chunkHideFarthest = null;
 }
 
-// Statics
 THREE.DynamicTerrainMap._mapChunkSize = 500;
+
+// Statics
+THREE.DynamicTerrainMap._defaultMapChunkSize = 500;
+THREE.DynamicTerrainMap._defaultDetailRanges = [
+  100,
+  1500,
+  3000,
+  10000
+];
+THREE.DynamicTerrainMap._defaultChunkHoverRange = 300;
+THREE.DynamicTerrainMap._defaultChunkHideFarthest = true;
 
 THREE.DynamicTerrainMap._debugModeColors = [
   0x414141,
@@ -66,11 +88,17 @@ THREE.DynamicTerrainMap.prototype = {
     // The "center" position
     this._position = options.position ? options.position : {x:0,y:0,z:0};
 
+    // Requires GenericWireframeMaterial.js
     // Replace all textures with wireframes of varying colors
     this._debugMode = options.debugMode ? true : false;
 
-    this._useWorkers = options.useWorkers ? true : false;
-
+    // If a useWorkers isn't strictly passed we just try to detect it.
+    if( typeof options.useWorkers == "undefined" ) {
+      this._useWorkers = typeof Worker == "undefined" ? false : true;
+    } else {
+      this._useWorkers = options.useWorkers ? true : false;
+    }
+    
     if( this._scene == null || 
         this._material == null ) {
       return;
@@ -110,6 +138,8 @@ THREE.DynamicTerrainMap.prototype = {
       return;
     }
     this._heightMap[this._getHeightMapArrayPosition(x,z)] = height;
+    this._chunkBuilder.setHeight(x,z,height);
+    this._map[this._getMapArrayPosition(x,z)].setHeight(x,z,height);
   },
 
   increaseHeight: function (x,z,dHeight) {

@@ -157,8 +157,7 @@ terrainMap.init({
   flatWidth: 5000,
   flatDepth: 5000,
   position: {x: 0, y: 0, z: 0},
-  debugMode: true,
-  useWorkers: useWorkers ? true : false
+  debugMode: true
 },init);
 
 /*

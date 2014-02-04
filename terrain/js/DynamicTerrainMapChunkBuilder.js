@@ -47,6 +47,28 @@ THREE.DynamicTerrainMapChunkBuilder.prototype.init = function (options) {
   }
 }
 
+THREE.DynamicTerrainMapChunkBuilder.prototype.setHeight = function (x,z,height) {
+  if( ! this._heightMap[this._getHeightMapArrayPosition(x,z)] ) {
+    return;
+  }
+  this._heightMap[this._getHeightMapArrayPosition(x,z)] = height;
+  // Update workers
+  for( var i = 0; i < workerCount; i++ ) {
+    this._workers[i].postMessage({
+      action: 'setHeight',
+      actionData: {
+        x: x,
+        z: z,
+        height: height
+      }
+    });
+  }
+}
+
+THREE.DynamicTerrainMapChunkBuilder.prototype._getHeightMapArrayPosition = function (widthPosition, depthPosition) {
+  return ( depthPosition * this._width + widthPosition );
+}
+
 THREE.DynamicTerrainMapChunkBuilder.prototype._workerCallback = function (e, self) {
   var workerId = e.data.id;
   if( e.data.action == 'init' ) {

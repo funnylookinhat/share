@@ -2,7 +2,7 @@
  * Creates the geometry for a DynamicTerrainMapChunk
  */
 
-importScripts('includes/three.min.js');
+// importScripts('includes/three.min.js');
 
 self._id = null;
 self._width = null;
@@ -23,6 +23,12 @@ self.onmessage = function (e) {
       action: 'init',
       id: self._id
     });
+  } else if ( e.data.action == 'setHeight' ) {
+    var x = e.data.actionData.x;
+    var z = e.data.actionData.z;
+    var height = e.data.actionData.height;
+    // We know this maps because it's checked for in Builder
+    self._heightMap[_getHeightMapArrayPosition(x,z)] = height;
   } else {
     // Create Geometry
     var width = e.data.actionData.chunkWidth;
@@ -171,7 +177,7 @@ self.onmessage = function (e) {
 function  _getHeightMapArrayPosition (widthPosition, depthPosition, heightMapWidth) {
   return ( depthPosition * heightMapWidth + widthPosition );
 }
-
+/*
 function _createBufferGeometry(widthLength,depthLength,widthVertices,depthVertices,xOffset,zOffset,heightMapWidth) {
   var numberOfVerts = widthVertices * depthVertices;
   var triangles = ( widthVertices - 1 ) * ( depthVertices - 1 ) * 2;
@@ -277,3 +283,4 @@ function _createBufferGeometry(widthLength,depthLength,widthVertices,depthVertic
   
   return bufferGeometry;
 }
+*/

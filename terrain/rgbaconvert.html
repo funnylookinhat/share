@@ -1,0 +1,42 @@
+<html>
+	<head>
+		<title>RGBA CONVERT Test</title>
+		<link href="css/world-editor.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+		<script type="text/javascript" src="js/rgbaconvert.js"></script>
+		<script type="text/javascript">
+			var tests = [
+				1,
+				12,
+				123,
+				123.4,
+				123.45,
+				123.456,
+				123.4567,
+				1234,
+				12345,
+				1234.999,
+				12345.999,
+				99999.789,
+				123456,
+				131071,
+				131072,
+				131071.999,
+				-131071.999,
+				-1,
+				-1.2,
+				999999.999,
+				1000000.999,
+				9999999.999
+			];
+			var rgba;
+			var result;
+			for( t in tests ) {
+				rgba = convertToRGBA(tests[t]);
+				result = convertToFloat(rgba);
+				console.log('TESTING: '+tests[t]+' ? '+( result == tests[t] ? 'PASSED' : 'FAILED -> '+result ));
+			}
+		</script>
+	</body>
+</html>
